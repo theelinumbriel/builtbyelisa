@@ -22,13 +22,6 @@ export const projects: Project[] = [
       'A WYSIWYG editor for Markdown. This is the synthesis of two thoughts: a - I want to actually read the markdown outputs of LLMs; b - code editors are not a nice place to do this. Helloword provides a document-style editing surface for Markdown with formatting beyond the standard spec (color, highlighting, etc.) while keeping the underlying file plain Markdown.',
   },
   {
-    name: 'vox',
-    href: 'https://theelinumbriel.github.io/vox-public/',
-    external: true,
-    rationale:
-      'A tool for higher-quality generated text. You curate a corpus of writing you enjoy; Vox extracts geometric relationships between tokens at the clause level then conditions generation on that structure. From a plain-text prompt, e.g. "write a one-page memo on X", it produces output that reflects the register of the curated corpus. Currently byok.',
-  },
-  {
     name: 'inline',
     href: 'https://github.com/theelinumbriel/inline',
     external: true,
