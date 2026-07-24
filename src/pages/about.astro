@@ -1,0 +1,73 @@
+---
+import Base from '../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base title="About | Elisa Diop-Weyer">
+  <section class="about">
+    <div class="text">
+      <h1 class="title" style="view-transition-name: nav-about">About</h1>
+      <p>20 years old</p>
+      <p>Current undergraduate at Harvard (Class of 2027; double concentration in Economics and Human Biology, Behavior and Evolution)</p>
+      <p class="indent">Editor-in-Chief of the <a href="https://www.harvardphilosophyreview.com/who-we-are-and-masthead" target="_blank" rel="noopener">Harvard Review of Philosophy</a></p>
+      <p class="indent">GenAI Fellow at Harvard's <a href="https://bokcenter.harvard.edu/learning-lab" target="_blank" rel="noopener">Learning Lab</a></p>
+      <p class="indent">Research Assistant at <a href="https://mlml.io/p/ai-personality-study/" target="_blank" rel="noopener">metaLAB @ Berkman Klein</a></p>
+      <p class="indent"><a href="https://www.moralambition.org/fellowships/fellows#university-fellows" target="_blank" rel="noopener">School for Moral Ambition</a> Fellow</p>
+      <p>Fluent in: French, English</p>
+      <p>Interests: digital products, generative AI, education, biotech, text production</p>
+    </div>
+    <img
+      class="portrait"
+      src={`${base}/portrait.jpg`}
+      width="560"
+      height="560"
+      alt="Elisa Diop-Weyer"
+      loading="lazy"
+    />
+  </section>
+</Base>
+
+<style>
+  .about {
+    position: relative;
+    min-height: calc(100vh - 9rem);
+  }
+
+  .text {
+    max-width: 64rem;
+  }
+
+  .text p {
+    margin: 0;
+  }
+
+  /* the four affiliation lines are indented in the deck */
+  .indent {
+    padding-left: 7.5rem;
+  }
+
+  .portrait {
+    width: clamp(180px, 24vw, 280px);
+    height: auto;
+    margin-top: 2.5rem;
+    display: block;
+    filter: grayscale(1);
+  }
+
+  /* on a wide viewport the portrait sits bottom-right, as in the deck */
+  @media (min-width: 800px) {
+    .portrait {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .indent {
+      padding-left: 1.5rem;
+    }
+  }
+</style>

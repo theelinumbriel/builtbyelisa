@@ -1,0 +1,129 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base title="Work at the Learning Lab | Elisa Diop-Weyer">
+  <article class="ll">
+    <header>
+      <h1 class="title">Work at the Learning Lab</h1>
+      <p class="meta">Updated 26 October 2025</p>
+    </header>
+
+    <p class="lede">Highlights</p>
+
+    <section>
+      <h2 class="course">TS 280: Python notebooks</h2>
+      <p>
+        Developed a suite of notebooks, including simple chat completions with
+        GPT + ElevenLabs API to input a text, choose a target language, and
+        output audio in that language, alongside more conceptual notebooks:
+      </p>
+      <ul>
+        <li>
+          <span class="u">Ping-pong:</span> repeatedly translating from language A
+          to language B and tracking the convergence of the translation;
+        </li>
+        <li>
+          <span class="u">Telephone:</span> translating from language A to B to C
+          to D and then to the target language, evaluating how the intermediary
+          translations impact the output;
+        </li>
+        <li>
+          <span class="u">Thematic focus + iteration:</span> built with a
+          professional translator to mimic his process. A first set of
+          completions creates "context" strings focused on cultural context,
+          authorship, and etymology; those strings + the original text are passed
+          through a completion that returns a structured output with the
+          translation and its strengths and weaknesses. Context + the three
+          outputs are then iterated, so completion <em>t</em> corrects the
+          weakness of completion <em>t&minus;1</em>. The final translation is
+          compared to a canonical, human translation. Final output = final
+          translation + JSON of strengths/weaknesses of each intermediate
+          translation + comparison to the canonical.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="course">GENED 1196: Python notebooks</h2>
+      <p>
+        Prototyped an "AI-proof" oral assignment. Generated visuals (tarot cards
+        with imagery + titles tied to core concepts, approaches, and case
+        studies); prototyped a Next.js file using the OpenAI Realtime API to
+        stream audio from student responses and generate follow-up questions
+        live. A selection mechanism produced an initial series of follow-ups, a
+        "judge" picked the top three, and a RAG chat completion over the syllabus
+        + rubric chose what most needed elaboration based on the top follow-ups
+        and the course material.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="course">MUSIC 250HFA: Python notebooks</h2>
+      <p>
+        Developed a suite of notebooks using librosa and matplotlib to visualize
+        musical snippets with 2D and 3D spectrograms, and to compare audio across
+        different covers of the same song, e.g. visualizing how far different
+        musicians emphasize different syllables in the same lyric.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="course">MOD HEB 241R: Python notebook</h2>
+      <p>
+        Built a notebook using OpenAI chat completions with structured outputs
+        and OpenAI's Whisper API to help students edit videos. The notebook took
+        a prompt, e.g. "discussions of environmental policy", and output a cut
+        of every snippet where the video matched the prompt.
+      </p>
+    </section>
+
+    <p class="back"><a href={`${base}/portfolio`}>← Portfolio</a></p>
+  </article>
+</Base>
+
+<style>
+  .ll {
+    max-width: 46rem;
+  }
+
+  .ll header {
+    margin-bottom: 1.8rem;
+  }
+
+  .meta {
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .lede {
+    font-style: italic;
+    margin-bottom: 1.4rem;
+  }
+
+  .ll section {
+    margin-bottom: 1.8rem;
+  }
+
+  .course {
+    font-weight: 400;
+    font-size: 1rem;
+    font-style: italic;
+    margin-bottom: 0.4rem;
+  }
+
+  .ll ul {
+    margin: 0.6rem 0 0;
+    padding-left: 1.4rem;
+  }
+
+  .ll li {
+    margin-bottom: 0.6rem;
+  }
+
+  .back {
+    margin-top: 2.5rem;
+  }
+</style>

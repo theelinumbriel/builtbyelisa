@@ -1,0 +1,182 @@
+---
+import Base from '../../layouts/Base.astro';
+import { projects } from '../../data/projects';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const resolveHref = (href: string) => (href.startsWith('/') ? base + href : href);
+---
+
+<Base title="Portfolio | Elisa Diop-Weyer">
+  <section class="portfolio">
+    <h1 class="title" style="view-transition-name: nav-portfolio">Portfolio</h1>
+    <ul class="list">
+      {
+        projects.map((p, i) => (
+          <li class="proj">
+            <div class="row">
+              <span class="label">
+                {/* keep the anchor's text content EXACTLY the name -- no surrounding
+                    whitespace, or the underline bleeds into the trailing space */}
+                {p.href ? (
+                  <a href={resolveHref(p.href)} target={p.external ? '_blank' : undefined} rel={p.external ? 'noopener' : undefined}>{p.name}</a>
+                ) : p.plain ? (
+                  <span>{p.name}</span>
+                ) : (
+                  <span class="u" title="coming soon">{p.name}</span>
+                )}
+              </span>
+              {p.rationale && (
+                <button class="why" type="button" aria-expanded="false" aria-controls={`r-${i}`} aria-label="show details">
+                  <span class="caret" aria-hidden="true">›</span>
+                </button>
+              )}
+            </div>
+            {p.rationale && (
+              <div class="rationale" id={`r-${i}`}>
+                <div class="rationale-inner">
+                  <p>{p.rationale}</p>
+                </div>
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+
+    <section class="feedback" aria-label="report an issue">
+      <p class="fb-note">If you experience any issues, please <a href={`${base}/contact`}>let me know</a>.</p>
+    </section>
+  </section>
+</Base>
+
+<style>
+  /* title is a top-left heading so the menu morph always lands in the same place */
+  .portfolio {
+    padding-top: 0.5rem;
+  }
+
+  .list {
+    list-style: none;
+    /* one full grid line below the title keeps the rows on the baseline grid */
+    margin: 1.5rem 0 0;
+    padding: 0;
+    /* a fixed column so every details arrow lines up on the same right edge */
+    max-width: 42rem;
+  }
+
+  .proj {
+    margin: 0;
+  }
+
+  /* gallery dimming: pointing at one project lowers the lights on the rest */
+  @media (hover: hover) and (pointer: fine) {
+    .proj {
+      transition: opacity 0.25s ease;
+    }
+    .list:has(.proj:hover) .proj:not(:hover) {
+      opacity: 0.35;
+    }
+  }
+
+  .row {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    /* the site's leading (1.5) so every row baseline sits on the grid */
+    line-height: 1.5;
+  }
+
+  /* the details toggle: a caret that rotates open.
+     margin-left:auto pushes every arrow to the column's right edge so they align. */
+  .why {
+    font: inherit;
+    font-style: italic;
+    color: var(--muted);
+    background: none;
+    border: 0;
+    padding: 0;
+    margin-left: auto;
+    flex: none;
+    white-space: nowrap;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .why:hover {
+    color: var(--fg);
+  }
+  .caret {
+    display: inline-block;
+    margin-left: 0.25rem;
+    font-style: normal; /* don't inherit the italic from .why -- keeps the › upright */
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .proj[data-open] .caret {
+    transform: rotate(90deg);
+  }
+
+  /* smooth height reveal via animating grid rows (0fr -> 1fr) */
+  .rationale {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .proj[data-open] .rationale {
+    grid-template-rows: 1fr;
+  }
+  /* where the platform can interpolate to height:auto natively, retire the
+     grid-rows hack (kept above as the fallback) and animate real height */
+  @supports (interpolate-size: allow-keywords) {
+    .rationale {
+      display: block;
+      interpolate-size: allow-keywords;
+      height: 0;
+      overflow: clip;
+      transition: height 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .proj[data-open] .rationale {
+      height: auto;
+    }
+  }
+  .rationale-inner {
+    overflow: hidden;
+  }
+  .rationale-inner p {
+    margin: 0;
+    padding: 0.6rem 0 0.9rem;
+    max-width: 42rem;
+    color: var(--muted);
+    /* 1.5 keeps the rationale's own lines in grid rhythm; its 0.6 + 0.9
+       paddings sum to one grid unit, so everything below an open dropdown
+       lands back on the grid */
+    line-height: 1.5;
+    /* the text arrives a beat after the space opens; leaves instantly */
+    opacity: 0;
+    transition: opacity 0.28s ease;
+  }
+  .proj[data-open] .rationale-inner p {
+    opacity: 1;
+    transition-delay: 0.08s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .caret,
+    .rationale,
+    .rationale-inner p {
+      transition: none;
+    }
+  }
+
+  /* issue-report note */
+  .feedback {
+    /* grid multiples; the padding gives back the border's pixel */
+    margin-top: 3rem;
+    max-width: 42rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: calc(1.5rem - 1px);
+  }
+  .fb-note {
+    color: var(--muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>

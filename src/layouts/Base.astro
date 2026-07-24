@@ -1,0 +1,110 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Nav from '../components/Nav.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** home hides the top bar and lets the page own the full viewport */
+  home?: boolean;
+}
+
+const {
+  title = 'Elisa Diop-Weyer',
+  description = 'Portfolio of Elisa Diop-Weyer',
+  home = false,
+} = Astro.props;
+
+// base-aware asset/links so the site works under the GitHub Pages subpath
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={`${base}/apple-touch-icon.png`} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    {
+      !home && (
+        <header class="topbar">
+          <a class="brand" href={`${base}/`}>Elisa Diop-Weyer</a>
+          <Nav />
+        </header>
+      )
+    }
+    <main>
+      <slot />
+    </main>
+
+    {/* baseline-grid easter egg: press "g" to overlay the leading grid */}
+    <div class="baseline-grid" hidden aria-hidden="true"></div>
+
+    <script>
+      // wired once on document; survives Astro view-transition (SPA) navigations.
+      const w = window as unknown as { __emdwWired?: boolean };
+      if (!w.__emdwWired) {
+        w.__emdwWired = true;
+
+        // portfolio: reveal a project's details (quiet accordion)
+        document.addEventListener('click', (e) => {
+          const btn = (e.target as HTMLElement).closest('.why') as HTMLButtonElement | null;
+          if (!btn) return;
+          const proj = btn.closest('.proj') as HTMLElement | null;
+          if (!proj) return;
+          const open = proj.toggleAttribute('data-open');
+          btn.setAttribute('aria-expanded', String(open));
+        });
+
+        // baseline-grid easter egg: "g" toggles a faint overlay of the leading
+        // grid, anchored so the lines sit exactly under the letters.
+        // session-scoped so it survives view-transition navigations.
+        const gridOn = () => {
+          try { return sessionStorage.getItem('emdw-grid') === '1'; } catch { return false; }
+        };
+        const placeGrid = () => {
+          const grid = document.querySelector('.baseline-grid') as HTMLElement | null;
+          if (!grid) return;
+          const hide = !gridOn();
+          grid.toggleAttribute('hidden', hide);
+          if (hide) return;
+          // a zero-size inline probe's bottom sits exactly on the text baseline
+          const ref = document.querySelector('main h1, main p') || document.body;
+          const probe = document.createElement('span');
+          probe.style.cssText =
+            'display:inline-block;width:0;height:0;margin:0;padding:0;border:0;vertical-align:baseline';
+          ref.insertBefore(probe, ref.firstChild);
+          const baseline = probe.getBoundingClientRect().top + window.scrollY;
+          probe.remove();
+          const pitch = parseFloat(getComputedStyle(document.body).lineHeight);
+          if (!pitch) return;
+          // line's top edge on the baseline, snapped to the device-pixel grid
+          // so every hairline renders crisp instead of smearing across two
+          const dpr = window.devicePixelRatio || 1;
+          const phase = Math.round((((baseline % pitch) + pitch) % pitch) * dpr) / dpr;
+          grid.style.setProperty('--grid-pitch', `${pitch}px`);
+          grid.style.setProperty('--grid-phase', `${Math.min(phase, pitch - 1)}px`);
+        };
+        document.addEventListener('keydown', (e) => {
+          if (e.key !== 'g' || e.metaKey || e.ctrlKey || e.altKey) return;
+          const t = e.target as HTMLElement | null;
+          if (t && t.closest('input, textarea, select, [contenteditable]')) return;
+          try { sessionStorage.setItem('emdw-grid', gridOn() ? '0' : '1'); } catch {}
+          placeGrid();
+        });
+        // the overlay div is re-rendered on every (SPA) navigation -- re-apply;
+        // re-measure on resize because the root font-size is fluid
+        document.addEventListener('astro:page-load', placeGrid);
+        window.addEventListener('resize', placeGrid);
+        placeGrid();
+      }
+    </script>
+  </body>
+</html>
