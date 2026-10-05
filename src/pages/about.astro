@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import HandwrittenLabel from '../components/HandwrittenLabel.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
@@ -7,7 +8,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <Base title="About | Elisa Diop-Weyer">
   <section class="about">
     <div class="text">
-      <h1 class="title" style="view-transition-name: nav-about">About</h1>
+      <h1 class="title" style="view-transition-name: nav-about"><HandwrittenLabel asset="about" label="About" /></h1>
       <p>20 years old</p>
       <p>Current undergraduate at Harvard (Class of 2027; double concentration in Economics and Human Biology, Behavior and Evolution)</p>
       <p class="indent">Editor-in-Chief of the <a href="https://www.harvardphilosophyreview.com/who-we-are-and-masthead" target="_blank" rel="noopener">Harvard Review of Philosophy</a></p>

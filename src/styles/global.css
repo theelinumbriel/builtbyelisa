@@ -81,6 +81,34 @@ p {
   margin: 0;
 }
 
+/* SVGs exported from Freehand drop into the existing layout without changing
+   its calm rhythm. Until an asset exists, HandwrittenLabel renders the exact
+   current text, so the portfolio is never half-converted or inaccessible. */
+.handwritten-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5em;
+  vertical-align: middle;
+}
+
+.handwritten-label img {
+  display: block;
+  width: auto;
+  height: 1.45em;
+  max-width: min(100%, 18rem);
+  overflow: visible;
+}
+
+.brand .handwritten-label img,
+.name .handwritten-label img {
+  height: 1.65em;
+  max-width: min(72vw, 24rem);
+}
+
+.title .handwritten-label img {
+  height: 1.6em;
+}
+
 /* ---- shared chrome (inner pages) ---- */
 
 /* sticky "liquid glass" top bar -- stays visible on scroll, frosts the content
@@ -195,6 +223,8 @@ main {
      word glides to its spot at a constant size instead of scaling/"exploding". */
   ::view-transition-old(nav-portfolio),
   ::view-transition-new(nav-portfolio),
+  ::view-transition-old(nav-musings),
+  ::view-transition-new(nav-musings),
   ::view-transition-old(nav-about),
   ::view-transition-new(nav-about),
   ::view-transition-old(nav-contact),

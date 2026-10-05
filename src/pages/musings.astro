@@ -1,0 +1,111 @@
+---
+import HandwrittenLabel from '../components/HandwrittenLabel.astro';
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Musings | Elisa Diop-Weyer" description="Inputs and outputs from Elisa Diop-Weyer's text practice.">
+  <section class="musings-page">
+    <h1 class="title" style="view-transition-name: nav-musings"><HandwrittenLabel asset="musings" label="Musings" /></h1>
+
+    <div class="musings-split">
+      <section class="musings-column inputs" aria-labelledby="inputs-heading">
+        <header>
+          <h2 id="inputs-heading">Inputs</h2>
+          <p>Things I am reading, noticing, and working from.</p>
+        </header>
+        <div class="musings-field" aria-label="Inputs list">
+          <p class="empty-note">Notes and source material will live here.</p>
+        </div>
+      </section>
+
+      <section class="musings-column outputs" aria-labelledby="outputs-heading">
+        <header>
+          <h2 id="outputs-heading">Outputs</h2>
+          <p>Things I have written, made, and sent into the world.</p>
+        </header>
+        <div class="musings-field" aria-label="Outputs list">
+          <p class="empty-note">Essays, fragments, and other finished text will live here.</p>
+        </div>
+      </section>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .musings-page {
+    min-height: calc(100vh - 8rem);
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  .musings-split {
+    min-height: 0;
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    border-top: 1px solid rgba(0, 0, 0, 0.14);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+  }
+
+  .musings-column {
+    min-height: clamp(24rem, 62vh, 48rem);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding: 1.5rem 0;
+  }
+
+  .musings-column + .musings-column {
+    border-left: 1px solid rgba(0, 0, 0, 0.14);
+    padding-left: var(--pad);
+  }
+
+  .musings-column:first-child {
+    padding-right: var(--pad);
+  }
+
+  .musings-column header {
+    min-height: 6rem;
+  }
+
+  .musings-column h2 {
+    font-style: italic;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+
+  .musings-column header p,
+  .empty-note {
+    color: var(--muted);
+  }
+
+  .musings-field {
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 0.15rem;
+  }
+
+  .empty-note {
+    max-width: 25rem;
+  }
+
+  @media (max-width: 700px) {
+    .musings-split {
+      grid-template-columns: 1fr;
+    }
+
+    .musings-column {
+      min-height: 18rem;
+    }
+
+    .musings-column:first-child {
+      padding-right: 0;
+    }
+
+    .musings-column + .musings-column {
+      border-left: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.14);
+      padding-left: 0;
+    }
+  }
+</style>

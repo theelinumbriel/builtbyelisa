@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import HandwrittenLabel from '../../components/HandwrittenLabel.astro';
 import { projects } from '../../data/projects';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -8,7 +9,7 @@ const resolveHref = (href: string) => (href.startsWith('/') ? base + href : href
 
 <Base title="Portfolio | Elisa Diop-Weyer">
   <section class="portfolio">
-    <h1 class="title" style="view-transition-name: nav-portfolio">Portfolio</h1>
+    <h1 class="title" style="view-transition-name: nav-portfolio"><HandwrittenLabel asset="portfolio" label="Portfolio" /></h1>
     <ul class="list">
       {
         projects.map((p, i) => (

@@ -1,0 +1,25 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+interface Props {
+  asset: string;
+  label: string;
+  class?: string;
+}
+
+const { asset, label, class: className } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const hasHandwriting = existsSync(join(process.cwd(), 'public', 'handwriting', `${asset}.svg`));
+---
+
+<span class:list={['handwritten-label', className]} data-handwriting={asset}>
+  {
+    hasHandwriting ? (
+      <img src={`${base}/handwriting/${asset}.svg`} alt={label} />
+    ) : (
+      <span>{label}</span>
+    )
+  }
+</span>
+

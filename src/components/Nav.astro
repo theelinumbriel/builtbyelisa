@@ -1,4 +1,6 @@
 ---
+import HandwrittenLabel from './HandwrittenLabel.astro';
+
 interface Props {
   /** when true, each link carries a view-transition-name so the clicked word
       morphs into the destination page's title. Only the home hub opts in --
@@ -12,6 +14,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const links = [
   ['/portfolio', 'Portfolio'],
+  ['/musings', 'Musings'],
   ['/about', 'About'],
   ['/contact', 'Contact'],
 ];
@@ -27,7 +30,7 @@ const isActive = (href: string) =>
         aria-current={isActive(href) ? 'page' : undefined}
         style={morph ? `view-transition-name: nav-${label.toLowerCase()}` : undefined}
       >
-        {label}
+        <HandwrittenLabel asset={label.toLowerCase()} label={label} />
       </a>
     ))
   }

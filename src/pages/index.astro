@@ -1,11 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
+import HandwrittenLabel from '../components/HandwrittenLabel.astro';
 import Nav from '../components/Nav.astro';
 ---
 
 <Base home={true}>
   <section class="hero">
-    <h1 class="name">Elisa Diop-Weyer</h1>
+    <h1 class="name"><HandwrittenLabel asset="elisa-diop-weyer" label="Elisa Diop-Weyer" /></h1>
     <Nav morph={true} />
   </section>
 </Base>
