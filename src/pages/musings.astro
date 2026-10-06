@@ -45,10 +45,16 @@ import Base from '../layouts/Base.astro';
                 <span>Kai Bird and Martin J. Sherwin</span>
               </a>
             </li>
+            <li>
+              <a href="https://en.wikipedia.org/wiki/2001:_A_Space_Odyssey" target="_blank" rel="noreferrer">
+                <cite>2001: A Space Odyssey</cite>
+                <span>Stanley Kubrick</span>
+              </a>
+            </li>
             <li class="input-with-pages">
               <div class="input-heading">
                 <cite>Le dernier homme</cite>
-                <span>Friedrich Nietzsche</span>
+                <span>from <cite>Ainsi parlait Zarathoustra</cite> · Friedrich Nietzsche</span>
               </div>
               <div class="input-pages" aria-label="Le dernier homme pages">
                 <a href="https://fr.wikisource.org/wiki/Page:Nietzsche_-_Ainsi_parlait_Zarathoustra_(trad._Albert,_1903).djvu/17" target="_blank" rel="noreferrer">Page 17</a>
@@ -61,6 +67,32 @@ import Base from '../layouts/Base.astro';
                 <cite>Moral Agency Is Proper to Persons, Not Machines</cite>
                 <span>The Duty of the Moment</span>
               </a>
+            </li>
+            <li class="input-excerpt">
+              <div class="input-heading">
+                <a class="input-excerpt-title" href="https://book.stevejobsarchive.com/" target="_blank" rel="noreferrer"><cite>Email from Steve to Himself</cite></a>
+                <span>Steve Jobs · September 2, 2010</span>
+              </div>
+              <p class="email-subject">[No Subject]</p>
+              <dl class="email-meta">
+                <dt>From:</dt><dd>Steve Jobs</dd>
+                <dt>To:</dt><dd>Steve Jobs</dd>
+                <dt>Subject:</dt><dd></dd>
+                <dt>Date:</dt><dd>September 2, 2010, 11:08 p.m.</dd>
+              </dl>
+              <blockquote>
+                <p>I grow little of the food I eat, and of the little I do grow I did not breed or perfect the seeds.</p>
+                <p>I do not make any of my own clothing.</p>
+                <p>I speak a language I did not invent or refine.</p>
+                <p>I did not discover the mathematics I use.</p>
+                <p>I am protected by freedoms and laws I did not conceive of or legislate, and do not enforce or adjudicate.</p>
+                <p>I am moved by music I did not create myself.</p>
+                <p>When I needed medical attention, I was helpless to help myself survive.</p>
+                <p>I did not invent the transistor, the microprocessor, object oriented programming, or most of the technology I work with.</p>
+                <p>I love and admire my species, living and dead, and am totally dependent on them for my life and well being.</p>
+                <p>Sent from my iPad</p>
+              </blockquote>
+              <p class="excerpt-source">Excerpt from <a href="https://book.stevejobsarchive.com/" target="_blank" rel="noreferrer"><cite>Make Something Wonderful</cite></a> by Steve Jobs.</p>
             </li>
           </ul>
         </div>
@@ -191,6 +223,67 @@ import Base from '../layouts/Base.astro';
     color: var(--muted);
     font-size: 0.9em;
     text-underline-offset: 2px;
+  }
+
+  .input-excerpt {
+    padding: 0.65rem 0 1rem;
+  }
+
+  .input-excerpt-title {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .input-excerpt-title:hover,
+  .input-excerpt-title:focus-visible,
+  .excerpt-source a:hover,
+  .excerpt-source a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .email-subject {
+    margin: 0.65rem 0 0;
+    font-size: 0.9em;
+  }
+
+  .email-meta {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.05rem 0.5rem;
+    margin: 0.4rem 0 0.85rem;
+    color: var(--muted);
+    font-size: 0.8em;
+  }
+
+  .email-meta dd {
+    margin: 0;
+  }
+
+  blockquote {
+    margin: 0;
+    padding-left: 0.8rem;
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+    font-size: 0.9em;
+    line-height: 1.45;
+  }
+
+  blockquote p {
+    margin: 0 0 0.55rem;
+  }
+
+  blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  .excerpt-source {
+    margin: 0.75rem 0 0;
+    color: var(--muted);
+    font-size: 0.8em;
+  }
+
+  .excerpt-source a {
+    color: inherit;
   }
 
   @media (max-width: 700px) {
