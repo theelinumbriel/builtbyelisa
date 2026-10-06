@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base
+  title="t = 0 or, “Le Vent se Lève” | Elisa Diop-Weyer"
+  description="For Paul Valéry. An essay by emdw."
+>
+  <article class="essay-page">
+    <a class="back-link" href={`${base}/musings/`}>← Selected Outputs</a>
+
+    <header>
+      <h1>t = 0 or, “Le Vent se Lève”</h1>
+      <p class="dedication">For Paul Valéry</p>
+    </header>
+
+    <div class="essay-body">
+      <p>I once heard from a since-reformed Hinge user that she used the prompt “I will not shut about …” to inform potential suitors that she was only on the godforsaken app in a so-called “postmodern, ironic way”. So let this be the analogous disclaimer, if ever a pair of unlikely eyes were to end up on these words; I’d hazard that the presumption implied with putting written text on the internet is infinintely more incriminating than a presence on Hinge.</p>
+
+      <p>I am in terrible karmic debt with respect to people’s writing; too many times have I glanced at a blog or poetry account or critically acclaimed novel (don’t ask me about Roxane Gay or Mohsin Hamid or Haruki Murakami) and loudly proclaimed that the writing in question was terribly overrated. So if God were to send me scathing readers that dismiss my prose as unintelligent or uninformed or pretentious, I would understand this as the natural unraveling of history and would pour one out for Georg Wilhem Friedrich himself.</p>
+
+      <p>This endeavor in prose is coming about for <a href="https://en.wikipedia.org/wiki/Observer_effect_(physics)" target="_blank" rel="noreferrer">Heisenbergian</a> reasons; I know what my writing is like when it’s concealed in my journal, and I wonder what it might come to be when it is at least possible that it is under observation. Insofar as my prose in my journal feels continuous and aimless and a little too verbose for the <a href="https://doge.gov/" target="_blank" rel="noreferrer">Edward Coristine</a> in me, here I want brevity and I want telos.</p>
+
+      <p>This is likely too much hedging. Maybe, tout simplement, le vent se lève, et c’est ainsi que je tente de vivre.</p>
+    </div>
+
+    <p class="signature">-- emdw 20261005</p>
+  </article>
+</Base>
+
+<style>
+  .essay-page {
+    width: min(100%, 48rem);
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 3rem;
+    color: var(--muted);
+    font-size: 0.8em;
+    text-decoration: none;
+  }
+
+  .back-link:hover,
+  .back-link:focus-visible {
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-style: italic;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .dedication {
+    margin-top: 0.5rem;
+    color: var(--muted);
+  }
+
+  .essay-body {
+    margin-top: 3rem;
+  }
+
+  .essay-body p {
+    margin: 0 0 1.5rem;
+  }
+
+  .signature {
+    margin-top: 2.5rem;
+    text-align: right;
+  }
+</style>

@@ -16,7 +16,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <p class="updated-date">updated: 20261005</p>
         </header>
         <div class="musings-field" aria-label="Selected inputs list">
-          <ul class="inputs-list">
+          <ul class="musings-list">
             <li>
               <a href="https://en.wikipedia.org/wiki/Mating_(novel)" target="_blank" rel="noreferrer">
                 <cite>Mating</cite>
@@ -97,7 +97,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <header>
           <h2 id="outputs-heading">Selected Outputs</h2>
         </header>
-        <div class="musings-field" aria-label="Selected outputs list"></div>
+        <div class="musings-field" aria-label="Selected outputs list">
+          <ul class="musings-list">
+            <li>
+              <a href={`${base}/musings/t-zero-le-vent-se-leve/`}>
+                <cite>t = 0 or, “Le Vent se Lève”</cite>
+                <span>emdw</span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </section>
     </div>
   </section>
@@ -157,22 +166,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     padding-bottom: 0.15rem;
   }
 
-  .inputs-list {
+  .musings-list {
     width: 100%;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .inputs-list li {
+  .musings-list li {
     border-top: 1px solid rgba(0, 0, 0, 0.14);
   }
 
-  .inputs-list li:last-child {
+  .musings-list li:last-child {
     border-bottom: 1px solid rgba(0, 0, 0, 0.14);
   }
 
-  .inputs-list > li > a,
+  .musings-list > li > a,
   .input-heading {
     display: flex;
     align-items: baseline;
@@ -180,23 +189,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     gap: 1rem;
   }
 
-  .inputs-list > li > a {
+  .musings-list > li > a {
     padding: 0.65rem 0;
     color: inherit;
     text-decoration: none;
   }
 
-  .inputs-list > li > a:hover cite,
-  .inputs-list > li > a:focus-visible cite {
+  .musings-list > li > a:hover cite,
+  .musings-list > li > a:focus-visible cite {
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
-  .inputs-list cite {
+  .musings-list cite {
     font-style: italic;
   }
 
-  .inputs-list span {
+  .musings-list span {
     flex: 0 0 auto;
     color: var(--muted);
     font-size: 0.9em;
@@ -239,14 +248,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       padding-left: 0;
     }
 
-    .inputs-list > li > a,
+    .musings-list > li > a,
     .input-heading {
       align-items: flex-start;
       flex-direction: column;
       gap: 0.15rem;
     }
 
-    .inputs-list span {
+    .musings-list span {
       text-align: left;
     }
   }
