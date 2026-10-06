@@ -3,27 +3,64 @@ import HandwrittenLabel from '../components/HandwrittenLabel.astro';
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="Musings | Elisa Diop-Weyer" description="Inputs and outputs from Elisa Diop-Weyer's text practice.">
+<Base title="Musings | Elisa Diop-Weyer" description="Selected inputs and outputs from Elisa Diop-Weyer's text practice.">
   <section class="musings-page">
     <h1 class="title" style="view-transition-name: nav-musings"><HandwrittenLabel asset="musings" label="Musings" /></h1>
 
     <div class="musings-split">
       <section class="musings-column inputs" aria-labelledby="inputs-heading">
         <header>
-          <h2 id="inputs-heading">Inputs</h2>
+          <h2 id="inputs-heading">Selected Inputs</h2>
           <p>Things I am reading, noticing, and working from.</p>
         </header>
-        <div class="musings-field" aria-label="Inputs list">
-          <p class="empty-note">Notes and source material will live here.</p>
+        <div class="musings-field" aria-label="Selected inputs list">
+          <ul class="inputs-list">
+            <li>
+              <a href="https://en.wikipedia.org/wiki/Mating_(novel)" target="_blank" rel="noreferrer">
+                <cite>Mating</cite>
+                <span>Norman Rush</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://en.wikipedia.org/wiki/Mortals_(novel)" target="_blank" rel="noreferrer">
+                <cite>Mortals</cite>
+                <span>Norman Rush</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://ia601408.us.archive.org/14/items/in.ernet.dli.2015.233884/2015.233884.The-Division.pdf" target="_blank" rel="noreferrer">
+                <cite>The Division of Labor in Society</cite>
+                <span>Émile Durkheim</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.paulkingsnorth.net/against-machine" target="_blank" rel="noreferrer">
+                <cite>Against the Machine</cite>
+                <span>Paul Kingsnorth</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://en.wikipedia.org/wiki/American_Prometheus" target="_blank" rel="noreferrer">
+                <cite>American Prometheus</cite>
+                <span>Kai Bird and Martin J. Sherwin</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://thedutyofthemoment.substack.com/p/moral-agency-is-proper-to-persons" target="_blank" rel="noreferrer">
+                <cite>Moral Agency Is Proper to Persons, Not Machines</cite>
+                <span>The Duty of the Moment</span>
+              </a>
+            </li>
+          </ul>
         </div>
       </section>
 
       <section class="musings-column outputs" aria-labelledby="outputs-heading">
         <header>
-          <h2 id="outputs-heading">Outputs</h2>
+          <h2 id="outputs-heading">Selected Outputs</h2>
           <p>Things I have written, made, and sent into the world.</p>
         </header>
-        <div class="musings-field" aria-label="Outputs list">
+        <div class="musings-field" aria-label="Selected outputs list">
           <p class="empty-note">Essays, fragments, and other finished text will live here.</p>
         </div>
       </section>
@@ -85,6 +122,48 @@ import Base from '../layouts/Base.astro';
     padding-bottom: 0.15rem;
   }
 
+  .inputs-list {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .inputs-list li {
+    border-top: 1px solid rgba(0, 0, 0, 0.14);
+  }
+
+  .inputs-list li:last-child {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+  }
+
+  .inputs-list a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 0;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .inputs-list a:hover cite,
+  .inputs-list a:focus-visible cite {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .inputs-list cite {
+    font-style: italic;
+  }
+
+  .inputs-list span {
+    flex: 0 0 auto;
+    color: var(--muted);
+    font-size: 0.9em;
+    text-align: right;
+  }
+
   .empty-note {
     max-width: 25rem;
   }
@@ -106,6 +185,16 @@ import Base from '../layouts/Base.astro';
       border-left: 0;
       border-top: 1px solid rgba(0, 0, 0, 0.14);
       padding-left: 0;
+    }
+
+    .inputs-list a {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .inputs-list span {
+      text-align: left;
     }
   }
 </style>
