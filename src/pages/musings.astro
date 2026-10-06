@@ -11,7 +11,7 @@ import Base from '../layouts/Base.astro';
       <section class="musings-column inputs" aria-labelledby="inputs-heading">
         <header>
           <h2 id="inputs-heading">Selected Inputs</h2>
-          <p>Things I am reading, noticing, and working from.</p>
+          <p class="updated-date">updated: 20261005</p>
         </header>
         <div class="musings-field" aria-label="Selected inputs list">
           <ul class="inputs-list">
@@ -69,11 +69,8 @@ import Base from '../layouts/Base.astro';
       <section class="musings-column outputs" aria-labelledby="outputs-heading">
         <header>
           <h2 id="outputs-heading">Selected Outputs</h2>
-          <p>Things I have written, made, and sent into the world.</p>
         </header>
-        <div class="musings-field" aria-label="Selected outputs list">
-          <p class="empty-note">Essays, fragments, and other finished text will live here.</p>
-        </div>
+        <div class="musings-field" aria-label="Selected outputs list"></div>
       </section>
     </div>
   </section>
@@ -122,9 +119,9 @@ import Base from '../layouts/Base.astro';
     text-decoration-thickness: 1px;
   }
 
-  .musings-column header p,
-  .empty-note {
+  .updated-date {
     color: var(--muted);
+    font-size: 0.8em;
   }
 
   .musings-field {
@@ -194,10 +191,6 @@ import Base from '../layouts/Base.astro';
     color: var(--muted);
     font-size: 0.9em;
     text-underline-offset: 2px;
-  }
-
-  .empty-note {
-    max-width: 25rem;
   }
 
   @media (max-width: 700px) {
