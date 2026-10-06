@@ -88,6 +88,7 @@ p {
   display: inline-flex;
   align-items: center;
   min-height: 1.5em;
+  position: relative;
   vertical-align: middle;
 }
 
@@ -107,6 +108,33 @@ p {
 
 .title .handwritten-label img {
   height: 1.6em;
+}
+
+.handwritten-underline {
+  position: absolute;
+  left: -0.08em;
+  bottom: -0.08em;
+  width: calc(100% + 0.16em);
+  height: 0.28em;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.handwritten-underline path {
+  fill: none;
+  stroke: #1f57ff;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+  transition: stroke-dashoffset 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+a:hover .handwritten-underline path,
+a[aria-current="page"] .handwritten-underline path {
+  stroke-dashoffset: 0;
 }
 
 /* ---- shared chrome (inner pages) ---- */
@@ -163,7 +191,6 @@ main {
 
 .nav a:hover,
 .nav a[aria-current="page"] {
-  text-decoration: underline;
   opacity: 1;
 }
 
@@ -236,6 +263,10 @@ main {
 
 /* honour reduced-motion: snap instantly, no animation */
 @media (prefers-reduced-motion: reduce) {
+  .handwritten-underline path {
+    transition: none;
+  }
+
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) {
