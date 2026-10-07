@@ -1,0 +1,65 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base
+  title="Présidentielle 2027: Partie 1 | Elisa Diop-Weyer"
+  description="Présidentielle 2027: Partie 1, by emdw."
+>
+  <article class="essay-page">
+    <a class="back-link" href={`${base}/musings/`}>← Selected Outputs</a>
+
+    <header>
+      <h1>Présidentielle 2027: Partie 1</h1>
+    </header>
+
+    <div class="essay-body">
+      <p>Currently watching: <a href="https://www.youtube.com/watch?v=rpURHoN54bQ" target="_blank" rel="noreferrer">https://www.youtube.com/watch?v=rpURHoN54bQ</a></p>
+
+      <p>Were I a deontologist, I would vote for Marine Tondelier without any hesitation whatsoever.</p>
+    </div>
+
+    <p class="signature">--emdw 20261006</p>
+  </article>
+</Base>
+
+<style>
+  .essay-page {
+    width: min(100%, 48rem);
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 3rem;
+    color: var(--muted);
+    font-size: 0.8em;
+    text-decoration: none;
+  }
+
+  .back-link:hover,
+  .back-link:focus-visible {
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-style: italic;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .essay-body {
+    margin-top: 3rem;
+  }
+
+  .essay-body p {
+    margin: 0 0 1.5rem;
+  }
+
+  .signature {
+    margin-top: 2.5rem;
+    text-align: right;
+  }
+</style>
