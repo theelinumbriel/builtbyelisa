@@ -1,0 +1,330 @@
+---
+interface Props {
+  colors?: [string, string] | string[];
+  scale?: number;
+  tidePeriod?: number;
+  contours?: number;
+  brightness?: number;
+  class?: string;
+}
+
+const {
+  colors = ['#f2fffe', '#000000'],
+  scale = 1,
+  tidePeriod = 36,
+  contours = 1,
+  brightness = 1,
+  class: className,
+} = Astro.props;
+---
+
+<glyph-tide
+  class:list={['glyph-tide', className]}
+  data-colors={JSON.stringify(colors)}
+  data-scale={scale}
+  data-tide-period={tidePeriod}
+  data-contours={contours}
+  data-brightness={brightness}
+></glyph-tide>
+
+<script>
+  type TrailPoint = { x: number; y: number; born: number };
+  type Ripple = { x: number; y: number; born: number };
+
+  const TAU = Math.PI * 2;
+  const glyphs = ['·', '˙', ':', '∼', '+', '*', '#', '%', '@'];
+
+  const clamp = (value: number, min = 0, max = 1) =>
+    Math.min(max, Math.max(min, value));
+
+  const smoothstep = (edge0: number, edge1: number, value: number) => {
+    const x = clamp((value - edge0) / (edge1 - edge0));
+    return x * x * (3 - 2 * x);
+  };
+
+  const mix = (a: number, b: number, amount: number) => a + (b - a) * amount;
+
+  const hash = (x: number, y: number) => {
+    const value = Math.sin(x * 127.1 + y * 311.7) * 43758.5453123;
+    return value - Math.floor(value);
+  };
+
+  const noise = (x: number, y: number) => {
+    const ix = Math.floor(x);
+    const iy = Math.floor(y);
+    const fx = x - ix;
+    const fy = y - iy;
+    const ux = fx * fx * (3 - 2 * fx);
+    const uy = fy * fy * (3 - 2 * fy);
+    return mix(
+      mix(hash(ix, iy), hash(ix + 1, iy), ux),
+      mix(hash(ix, iy + 1), hash(ix + 1, iy + 1), ux),
+      uy,
+    );
+  };
+
+  const terrain = (x: number, y: number, scale: number) => {
+    const density = 0.115 / Math.max(0.25, scale);
+    let value = 0;
+    let amplitude = 0.57;
+    let frequency = 1;
+    for (let octave = 0; octave < 4; octave += 1) {
+      value += noise(x * density * frequency, y * density * frequency) * amplitude;
+      amplitude *= 0.5;
+      frequency *= 2.04;
+    }
+    const longSwell = Math.sin(x * 0.032 + y * 0.018) * 0.08;
+    return value / 1.068 + longSwell;
+  };
+
+  const parseHex = (hex: string) => {
+    const clean = hex.replace('#', '');
+    const value = clean.length === 3
+      ? clean.split('').map((char) => char + char).join('')
+      : clean.padEnd(6, '0').slice(0, 6);
+    return [
+      Number.parseInt(value.slice(0, 2), 16),
+      Number.parseInt(value.slice(2, 4), 16),
+      Number.parseInt(value.slice(4, 6), 16),
+    ];
+  };
+
+  class GlyphTideElement extends HTMLElement {
+    canvas!: HTMLCanvasElement;
+    context!: CanvasRenderingContext2D;
+    resizeObserver!: ResizeObserver;
+    frame = 0;
+    width = 0;
+    height = 0;
+    dpr = 1;
+    cell = 11;
+    rowHeight = 13;
+    colors!: [string, string];
+    colorValues!: [number[], number[]];
+    scale = 1;
+    tidePeriod = 36;
+    contours = 0;
+    brightness = 1;
+    trail: TrailPoint[] = [];
+    ripples: Ripple[] = [];
+    reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      if (!this.canvas) {
+        const canvas = document.createElement('canvas');
+        canvas.setAttribute('aria-hidden', 'true');
+        const context = canvas.getContext('2d');
+        if (!context) return;
+        this.append(canvas);
+        this.canvas = canvas;
+        this.context = context;
+        const parsed = JSON.parse(this.dataset.colors || '["#f2fffe", "#000000"]');
+        this.colors = [parsed[0] || '#f2fffe', parsed[1] || '#000000'];
+        this.colorValues = [parseHex(this.colors[0]), parseHex(this.colors[1])];
+        this.scale = Number(this.dataset.scale || 1);
+        this.tidePeriod = Math.max(1, Number(this.dataset.tidePeriod || 36));
+        this.contours = Number(this.dataset.contours || 0);
+        this.brightness = Number(this.dataset.brightness || 1);
+        this.resizeObserver = new ResizeObserver(() => this.resize());
+      }
+      this.resizeObserver.observe(this);
+      window.addEventListener('pointermove', this.onPointerMove, { passive: true });
+      window.addEventListener('pointerdown', this.onPointerDown, { passive: true });
+      this.resize();
+      this.frame = requestAnimationFrame(this.draw);
+    }
+
+    disconnectedCallback() {
+      this.resizeObserver.disconnect();
+      window.removeEventListener('pointermove', this.onPointerMove);
+      window.removeEventListener('pointerdown', this.onPointerDown);
+      cancelAnimationFrame(this.frame);
+    }
+
+    resize() {
+      const rect = this.getBoundingClientRect();
+      this.width = Math.max(1, Math.round(rect.width));
+      this.height = Math.max(1, Math.round(rect.height));
+      this.dpr = Math.min(2, window.devicePixelRatio || 1);
+      this.canvas.width = Math.round(this.width * this.dpr);
+      this.canvas.height = Math.round(this.height * this.dpr);
+      this.canvas.style.width = `${this.width}px`;
+      this.canvas.style.height = `${this.height}px`;
+      this.context.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+      this.cell = clamp(this.width / 130, 8.5, 12);
+      this.rowHeight = this.cell * 1.18;
+      if (this.reducedMotion) this.render(performance.now());
+    }
+
+    localPoint(event: PointerEvent) {
+      const rect = this.getBoundingClientRect();
+      if (
+        event.clientX < rect.left || event.clientX > rect.right ||
+        event.clientY < rect.top || event.clientY > rect.bottom
+      ) return null;
+      return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    }
+
+    onPointerMove = (event: PointerEvent) => {
+      const point = this.localPoint(event);
+      if (!point) return;
+      const now = performance.now();
+      const last = this.trail.at(-1);
+      if (!last || Math.hypot(point.x - last.x, point.y - last.y) > 7) {
+        this.trail.push({ ...point, born: now });
+        if (this.trail.length > 54) this.trail.shift();
+      }
+      if (this.reducedMotion) this.render(now);
+    };
+
+    onPointerDown = (event: PointerEvent) => {
+      const point = this.localPoint(event);
+      if (!point) return;
+      this.ripples.push({ ...point, born: performance.now() });
+      if (this.ripples.length > 8) this.ripples.shift();
+    };
+
+    rgba(color: number[], alpha: number) {
+      return `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${clamp(alpha)})`;
+    }
+
+    draw = (now: number) => {
+      this.render(now);
+      if (!this.reducedMotion) this.frame = requestAnimationFrame(this.draw);
+    };
+
+    render(now: number) {
+      const ctx = this.context;
+      if (!this.width || !this.height) return;
+
+      ctx.clearRect(0, 0, this.width, this.height);
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(0, 0, this.width, this.height);
+      ctx.font = `500 ${this.cell}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const seconds = now / 1000;
+      const tide = 0.49 + Math.sin(seconds / this.tidePeriod * TAU) * 0.19;
+      const cols = Math.ceil(this.width / this.cell) + 1;
+      const rows = Math.ceil(this.height / this.rowHeight) + 1;
+      const expiredAt = now - 2100;
+      this.trail = this.trail.filter((point) => point.born > expiredAt);
+      this.ripples = this.ripples.filter((ripple) => now - ripple.born < 2500);
+
+      // The welcome menu creates its own patch of calm water. This is part of
+      // the field calculation—not a layer over the canvas—so glyphs dissolve
+      // along a softly irregular shoreline before they reach the type.
+      const hostRect = this.getBoundingClientRect();
+      const protectedContent = this.parentElement?.querySelector<HTMLElement>('.hero-content');
+      const protectedRect = protectedContent?.getBoundingClientRect();
+      const immunity = protectedRect ? {
+        x: protectedRect.left - hostRect.left + protectedRect.width / 2,
+        y: protectedRect.top - hostRect.top + protectedRect.height / 2,
+        radiusX: protectedRect.width / 2 + 22,
+        radiusY: protectedRect.height / 2 + 16,
+      } : null;
+
+      for (let row = 0; row < rows; row += 1) {
+        const py = row * this.rowHeight;
+        for (let col = 0; col < cols; col += 1) {
+          const px = col * this.cell;
+          const mapX = col + Math.sin(seconds * 0.12) * 2.6;
+          const mapY = row + Math.cos(seconds * 0.09) * 1.8;
+          const ground = terrain(mapX, mapY, this.scale);
+          const wave =
+            Math.sin(col * 0.22 + row * 0.09 - seconds * 0.75) * 0.025 +
+            Math.sin(col * -0.08 + row * 0.31 + seconds * 0.43) * 0.018;
+
+          let interaction = 0;
+          let wake = 0;
+          for (const point of this.trail) {
+            const age = (now - point.born) / 2100;
+            const distance = Math.hypot(px - point.x, py - point.y);
+            const radius = 78 * (1 - age * 0.45);
+            const influence = smoothstep(radius, 0, distance) * (1 - age);
+            interaction += influence * 0.15;
+            wake = Math.max(wake, influence);
+          }
+
+          let ripple = 0;
+          for (const origin of this.ripples) {
+            const age = (now - origin.born) / 1000;
+            const distance = Math.hypot(px - origin.x, py - origin.y);
+            const ring = Math.abs(distance - age * 86);
+            ripple = Math.max(ripple, smoothstep(20, 0, ring) * (1 - age / 2.5));
+          }
+
+          const depth = tide + wave + interaction - ground;
+          const shore = 1 - smoothstep(0.012, 0.075, Math.abs(depth));
+          const water = smoothstep(-0.015, 0.1, depth);
+          const exposed = 1 - water;
+
+          let intensity = water * (0.25 + clamp(depth * 3.7) * 0.65);
+          intensity += shore * 0.34 + wake * 0.42 + ripple * 0.62;
+          const contourBand = Math.pow(1 - Math.abs(((ground * 11) % 1) * 2 - 1), 18);
+          intensity += contourBand * exposed * this.contours * 0.22;
+
+          const dither = hash(col + row * 17, row - col * 11);
+          const index = Math.floor(clamp(intensity + (dither - 0.5) * 0.13) * (glyphs.length - 1));
+          if (water < 0.035 && shore < 0.05 && wake < 0.04 && ripple < 0.04 && this.contours === 0) {
+            if (dither > 0.035) continue;
+          }
+
+          const foamMix = clamp(shore * 0.92 + wake * 0.72 + ripple);
+          const alpha = clamp((0.12 + intensity * 0.88) * this.brightness);
+          let immunityMask = 1;
+          if (immunity) {
+            const dx = px - immunity.x;
+            const dy = py - immunity.y;
+            const angle = Math.atan2(dy / immunity.radiusY, dx / immunity.radiusX);
+            const distance = Math.hypot(dx / immunity.radiusX, dy / immunity.radiusY);
+            const organicEdge =
+              1 +
+              Math.sin(angle * 3 + 0.7) * 0.045 +
+              Math.sin(angle * 7 - 1.1) * 0.025 +
+              Math.sin(angle * 13 + seconds * 0.08) * 0.012;
+            const feather = smoothstep(organicEdge * 0.44, organicEdge * 1.9, distance);
+            const grain = (hash(col * 1.73 + 37, row * 1.31 - 19) - 0.5) * 0.12;
+            const mottledEdge = feather + grain * feather * (1 - feather) * 4;
+            immunityMask = 0.055 + clamp(mottledEdge) * 0.945;
+          }
+
+          const waterAlpha = alpha * (1 - foamMix) * immunityMask;
+          const foamAlpha = clamp(alpha * foamMix * 1.28) * immunityMask;
+
+          if (waterAlpha > 0.015) {
+            ctx.fillStyle = this.rgba(this.colorValues[0], waterAlpha);
+            ctx.fillText(glyphs[index], px, py);
+          }
+          if (foamAlpha > 0.02) {
+            ctx.fillStyle = this.rgba(this.colorValues[1], foamAlpha);
+            ctx.fillText(glyphs[Math.max(index, glyphs.length - 3)], px, py);
+          }
+        }
+      }
+    }
+  }
+
+  if (!customElements.get('glyph-tide')) {
+    customElements.define('glyph-tide', GlyphTideElement);
+  }
+</script>
+
+<style>
+  .glyph-tide {
+    display: block;
+    overflow: hidden;
+    background: #0a0a0a;
+  }
+
+  .glyph-tide canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

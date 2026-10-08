@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import GlyphTide from '../components/GlyphTide.astro';
+import HandwrittenLabel from '../components/HandwrittenLabel.astro';
+import Nav from '../components/Nav.astro';
+---
+
+<Base home={true}>
+  <section class="hero">
+    <GlyphTide
+      class="tide"
+      colors={["#f2fffe", "#000000"]}
+      scale={0.9000000000000001}
+      tidePeriod={22}
+      contours={0}
+      brightness={1.35}
+    />
+    <div class="hero-content">
+      <h1 class="name"><HandwrittenLabel asset="elisa-diop-weyer" label="Elisa Diop-Weyer" /></h1>
+      <Nav morph={true} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  :global(main) {
+    padding: 0;
+  }
+
+  .hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: #0a0a0a;
+  }
+
+  .hero :global(.tide) {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.35rem;
+    max-width: calc(100% - (2 * var(--pad)));
+    padding: 1.2rem 1.35rem;
+    text-align: center;
+    color: #ffffff;
+  }
+
+  .hero-content :global(.handwritten-label img) {
+    filter: invert(1);
+  }
+
+  .hero-content :global(.handwritten-underline path) {
+    stroke: #ffffff;
+  }
+
+  .name {
+    font-weight: 400;
+    font-size: 1rem;
+  }
+
+  .hero :global(.nav) {
+    flex-direction: column;
+    gap: 0.45rem;
+    align-items: center;
+  }
+</style>
