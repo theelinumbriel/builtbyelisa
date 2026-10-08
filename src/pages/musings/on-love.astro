@@ -1,0 +1,122 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base
+  title="On Love | Elisa Diop-Weyer"
+  description="On Love, by emdw."
+>
+  <article class="essay-page">
+    <a class="back-link" href={`${base}/musings/`}>← Selected Outputs</a>
+
+    <header>
+      <h1>On Love</h1>
+      <p class="dedication">Pour Aurelien</p>
+    </header>
+
+    <div class="essay-body">
+      <p>If person A loves person B:</p>
+
+      <ol>
+        <li>a decomposition of A’s utility function includes B’s utility function;</li>
+        <li>the relationship between A and B’s utility function is not only mediated by a third factor <var>θ</var>.</li>
+      </ol>
+
+      <p>I think of (2) as something analogous to the exclusion restriction in econometrics;</p>
+
+      <p>Consider A’s subjective utility <var>α</var>, B’s subjective utility <var>β</var>, and a set of variables <span class="math"><var>θ</var><sub>0</sub>, ..., <var>θ</var><sub>k</sub></span> that are correlated to both <var>α</var> and <var>β</var>. If <var>α</var> and <var>β</var> live together, then B’s good mood may be a third factor <var>θ</var> and A plausibly does nice things for B not because <var>β</var> is an end in itself but because B’s good mood is correlated with their own utility. Other plausible <var>θ</var>s: the social rewards A garners for being nice to B, the internal normative validation A enjoys from acting with kindness and affection. In evolutionary terms, with regard to <a href="https://en.wikipedia.org/wiki/Kin_selection" target="_blank" rel="noreferrer">Hamilton’s rule</a>, the inclusive fitness benefits that A enjoys by helping B are constitute a <var>θ</var> -- although I’d like to afford more thought to this. What’s Im saying here is that <var>α</var>’s correlation with <var>β</var> must not be explicable only in terms of a combination of dual-correlates <span class="math">∑<sub>i = 0</sub><sup>k</sup><var>θ</var><sub>i</sub></span>.</p>
+
+      <p>Of course, a set of <var>Θ</var>s is to be expected in the relationship between <var>α</var> and <var>β</var>, but the question is: are <var>α</var> and <var>β</var> still causally associated in the absence of any <var>θ</var>. That is it say, if we have:</p>
+
+      <math class="display-equation" display="block" aria-label="alpha equals lambda beta plus the sum from i equals zero to k of gamma i theta i plus epsilon">
+        <mi>α</mi><mo>=</mo><mi>λ</mi><mi>β</mi><mo>+</mo>
+        <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mi>k</mi></munderover>
+        <msub><mi>γ</mi><mi>i</mi></msub><msub><mi>θ</mi><mi>i</mi></msub><mo>+</mo><mi>ε</mi>
+      </math>
+
+      <p>Where for each <span class="math"><var>θ</var><sub>i</sub></span>, <span class="math">corr(<var>α</var>, <var>θ</var><sub>i</sub>) ≠ 0</span> and <span class="math">corr(<var>β</var>, <var>θ</var><sub>i</sub>) ≠ 0</span>,</p>
+
+      <p>then A loves B if and only if <span class="math"><var>λ</var> ≠ 0</span>.</p>
+
+      <p>I think this definition remains a phenomenological one by nature of the fact that we’re talking about utility, which in my use here is experienced and subjective.</p>
+    </div>
+
+    <p class="signature">-- emdw 20261007</p>
+  </article>
+</Base>
+
+<style>
+  .essay-page {
+    width: min(100%, 48rem);
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 3rem;
+    color: var(--muted);
+    font-size: 0.8em;
+    text-decoration: none;
+  }
+
+  .back-link:hover,
+  .back-link:focus-visible {
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-style: italic;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .dedication {
+    margin-top: 0.5rem;
+    color: var(--muted);
+  }
+
+  .essay-body {
+    margin-top: 3rem;
+  }
+
+  .essay-body p {
+    margin: 0 0 1.5rem;
+  }
+
+  ol {
+    margin: 0 0 1.5rem;
+    padding-left: 2.25rem;
+    list-style-type: decimal;
+  }
+
+  ol li {
+    margin-bottom: 0.65rem;
+    padding-left: 0.2rem;
+  }
+
+  ol li::marker {
+    content: counter(list-item) ")  ";
+  }
+
+  var,
+  .math,
+  .display-equation {
+    font-family: "Times New Roman", Times, serif;
+  }
+
+  .math {
+    white-space: nowrap;
+  }
+
+  .display-equation {
+    margin: 2rem auto;
+    font-size: 1.25em;
+  }
+
+  .signature {
+    margin-top: 2.5rem;
+    text-align: right;
+  }
+</style>
