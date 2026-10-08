@@ -1,7 +1,31 @@
 ---
 import Base from '../../layouts/Base.astro';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const typeset = (latex: string, displayMode = false) =>
+  katex.renderToString(latex, {
+    displayMode,
+    output: 'htmlAndMathml',
+    throwOnError: true,
+  });
+
+const alpha = typeset(String.raw`\alpha`);
+const beta = typeset(String.raw`\beta`);
+const theta = typeset(String.raw`\theta`);
+const capitalTheta = typeset(String.raw`\Theta`);
+const thetaRange = typeset(String.raw`\theta_0,\ldots,\theta_k`);
+const thetaSum = typeset(String.raw`\sum_{i=0}^{k}\theta_i`);
+const thetaI = typeset(String.raw`\theta_i`);
+const alphaCorrelation = typeset(String.raw`\operatorname{corr}(\alpha,\theta_i) \ne 0`);
+const betaCorrelation = typeset(String.raw`\operatorname{corr}(\beta,\theta_i) \ne 0`);
+const lambdaNonzero = typeset(String.raw`\lambda \ne 0`);
+const utilityEquation = typeset(
+  String.raw`\alpha = \lambda\beta + \sum_{i=0}^{k}\gamma_i\theta_i + \varepsilon`,
+  true,
+);
 ---
 
 <Base
@@ -13,7 +37,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <header>
       <h1>On Love</h1>
-      <p class="dedication">Pour Aurelien</p>
+      <p class="dedication">Pour Aurélien</p>
     </header>
 
     <div class="essay-body">
@@ -21,24 +45,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <ol>
         <li>a decomposition of A’s utility function includes B’s utility function;</li>
-        <li>the relationship between A and B’s utility function is not only mediated by a third factor <var>θ</var>.</li>
+        <li>the relationship between A and B’s utility function is not only mediated by a third factor <span class="math" set:html={theta}></span>.</li>
       </ol>
 
       <p>I think of (2) as something analogous to the exclusion restriction in econometrics;</p>
 
-      <p>Consider A’s subjective utility <var>α</var>, B’s subjective utility <var>β</var>, and a set of variables <span class="math"><var>θ</var><sub>0</sub>, ..., <var>θ</var><sub>k</sub></span> that are correlated to both <var>α</var> and <var>β</var>. If <var>α</var> and <var>β</var> live together, then B’s good mood may be a third factor <var>θ</var> and A plausibly does nice things for B not because <var>β</var> is an end in itself but because B’s good mood is correlated with their own utility. Other plausible <var>θ</var>s: the social rewards A garners for being nice to B, the internal normative validation A enjoys from acting with kindness and affection. In evolutionary terms, with regard to <a href="https://en.wikipedia.org/wiki/Kin_selection" target="_blank" rel="noreferrer">Hamilton’s rule</a>, the inclusive fitness benefits that A enjoys by helping B are constitute a <var>θ</var> -- although I’d like to afford more thought to this. What’s Im saying here is that <var>α</var>’s correlation with <var>β</var> must not be explicable only in terms of a combination of dual-correlates <span class="math">∑<sub>i = 0</sub><sup>k</sup><var>θ</var><sub>i</sub></span>.</p>
+      <p>Consider A’s subjective utility <span class="math" set:html={alpha}></span>, B’s subjective utility <span class="math" set:html={beta}></span>, and a set of variables <span class="math" set:html={thetaRange}></span> that are correlated to both <span class="math" set:html={alpha}></span> and <span class="math" set:html={beta}></span>. If <span class="math" set:html={alpha}></span> and <span class="math" set:html={beta}></span> live together, then B’s good mood may be a third factor <span class="math" set:html={theta}></span> and A plausibly does nice things for B not because <span class="math" set:html={beta}></span> is an end in itself but because B’s good mood is correlated with their own utility. Other plausible <span class="math" set:html={theta}></span>s: the social rewards A garners for being nice to B, the internal normative validation A enjoys from acting with kindness and affection. In evolutionary terms, with regard to <a href="https://en.wikipedia.org/wiki/Kin_selection" target="_blank" rel="noreferrer">Hamilton’s rule</a>, the inclusive fitness benefits that A enjoys by helping B are constitute a <span class="math" set:html={theta}></span> -- although I’d like to afford more thought to this. What’s Im saying here is that <span class="math" set:html={alpha}></span>’s correlation with <span class="math" set:html={beta}></span> must not be explicable only in terms of a combination of dual-correlates <span class="math" set:html={thetaSum}></span>.</p>
 
-      <p>Of course, a set of <var>Θ</var>s is to be expected in the relationship between <var>α</var> and <var>β</var>, but the question is: are <var>α</var> and <var>β</var> still causally associated in the absence of any <var>θ</var>. That is it say, if we have:</p>
+      <p>Of course, a set of <span class="math" set:html={capitalTheta}></span>s is to be expected in the relationship between <span class="math" set:html={alpha}></span> and <span class="math" set:html={beta}></span>, but the question is: are <span class="math" set:html={alpha}></span> and <span class="math" set:html={beta}></span> still causally associated in the absence of any <span class="math" set:html={theta}></span>. That is it say, if we have:</p>
 
-      <math class="display-equation" display="block" aria-label="alpha equals lambda beta plus the sum from i equals zero to k of gamma i theta i plus epsilon">
-        <mi>α</mi><mo>=</mo><mi>λ</mi><mi>β</mi><mo>+</mo>
-        <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mi>k</mi></munderover>
-        <msub><mi>γ</mi><mi>i</mi></msub><msub><mi>θ</mi><mi>i</mi></msub><mo>+</mo><mi>ε</mi>
-      </math>
+      <div class="display-equation" set:html={utilityEquation}></div>
 
-      <p>Where for each <span class="math"><var>θ</var><sub>i</sub></span>, <span class="math">corr(<var>α</var>, <var>θ</var><sub>i</sub>) ≠ 0</span> and <span class="math">corr(<var>β</var>, <var>θ</var><sub>i</sub>) ≠ 0</span>,</p>
+      <p>Where for each <span class="math" set:html={thetaI}></span>, <span class="math" set:html={alphaCorrelation}></span> and <span class="math" set:html={betaCorrelation}></span>,</p>
 
-      <p>then A loves B if and only if <span class="math"><var>λ</var> ≠ 0</span>.</p>
+      <p>then A loves B if and only if <span class="math" set:html={lambdaNonzero}></span>.</p>
 
       <p>I think this definition remains a phenomenological one by nature of the fact that we’re talking about utility, which in my use here is experienced and subjective.</p>
     </div>
@@ -100,18 +120,26 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     content: counter(list-item) ")  ";
   }
 
-  var,
-  .math,
-  .display-equation {
-    font-family: "Times New Roman", Times, serif;
-  }
-
   .math {
     white-space: nowrap;
   }
 
+  .math :global(.katex) {
+    font-size: 1em;
+  }
+
   .display-equation {
     margin: 2rem auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    text-align: center;
+  }
+
+  .display-equation :global(.katex-display) {
+    margin: 0;
+  }
+
+  .display-equation :global(.katex) {
     font-size: 1.25em;
   }
 

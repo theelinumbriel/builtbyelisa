@@ -77,18 +77,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <span>Jorge Luis Borges</span>
               </a>
             </li>
-            <li class="input-with-pages">
-              <div class="input-heading">
-                <cite>Ainsi parlait Zarathoustra</cite>
-                <span>Friedrich Nietzsche</span>
-              </div>
-              <div class="input-pages" aria-label="Le dernier homme pages">
-                <span><cite>Le dernier homme</cite>:</span>
-                <a href="https://fr.wikisource.org/wiki/Page:Nietzsche_-_Ainsi_parlait_Zarathoustra_(trad._Albert,_1903).djvu/17" target="_blank" rel="noreferrer">Page 17</a>
-                <a href="https://fr.wikisource.org/wiki/Page:Nietzsche_-_Ainsi_parlait_Zarathoustra_(trad._Albert,_1903).djvu/18" target="_blank" rel="noreferrer">Page 18</a>
-                <a href="https://fr.wikisource.org/wiki/Page:Nietzsche_-_Ainsi_parlait_Zarathoustra_(trad._Albert,_1903).djvu/19" target="_blank" rel="noreferrer">Page 19</a>
-              </div>
-            </li>
             <li>
               <a href="https://thedutyofthemoment.substack.com/p/moral-agency-is-proper-to-persons" target="_blank" rel="noreferrer">
                 <cite>Moral Agency Is Proper to Persons, Not Machines</cite>
@@ -215,8 +203,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     border-bottom: 1px solid rgba(0, 0, 0, 0.14);
   }
 
-  .musings-list > li > a,
-  .input-heading {
+  .musings-list > li > a {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -246,23 +233,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     text-align: right;
   }
 
-  .input-with-pages {
-    padding: 0.65rem 0;
-  }
-
-  .input-pages {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 0.35rem;
-  }
-
-  .input-pages a {
-    color: var(--muted);
-    font-size: 0.9em;
-    text-underline-offset: 2px;
-  }
-
   @media (max-width: 700px) {
     .musings-split {
       grid-template-columns: 1fr;
@@ -282,8 +252,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       padding-left: 0;
     }
 
-    .musings-list > li > a,
-    .input-heading {
+    .musings-list > li > a {
       align-items: flex-start;
       flex-direction: column;
       gap: 0.15rem;
