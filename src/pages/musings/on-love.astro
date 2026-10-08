@@ -15,7 +15,6 @@ const typeset = (latex: string, displayMode = false) =>
 const alpha = typeset(String.raw`\alpha`);
 const beta = typeset(String.raw`\beta`);
 const theta = typeset(String.raw`\theta`);
-const capitalTheta = typeset(String.raw`\Theta`);
 const thetaRange = typeset(String.raw`\theta_0,\ldots,\theta_k`);
 const thetaSum = typeset(String.raw`\sum_{i=0}^{k}\theta_i`);
 const thetaI = typeset(String.raw`\theta_i`);
@@ -52,7 +51,7 @@ const utilityEquation = typeset(
 
       <p>Consider A’s subjective utility <span class="math" set:html={alpha}></span>, B’s subjective utility <span class="math" set:html={beta}></span>, and a set of variables <span class="math" set:html={thetaRange}></span> that are correlated to both <span class="math" set:html={alpha}></span> and <span class="math" set:html={beta}></span>. If <span class="math" set:html={alpha}></span> and <span class="math" set:html={beta}></span> live together, then B’s good mood may be a third factor <span class="math" set:html={theta}></span> and A plausibly does nice things for B not because <span class="math" set:html={beta}></span> is an end in itself but because B’s good mood is correlated with their own utility. Other plausible <span class="math" set:html={theta}></span>s: the social rewards A garners for being nice to B, the internal normative validation A enjoys from acting with kindness and affection. In evolutionary terms, with regard to <a href="https://en.wikipedia.org/wiki/Kin_selection" target="_blank" rel="noreferrer">Hamilton’s rule</a>, the inclusive fitness benefits that A enjoys by helping B are constitute a <span class="math" set:html={theta}></span> -- although I’d like to afford more thought to this. What’s Im saying here is that <span class="math" set:html={alpha}></span>’s correlation with <span class="math" set:html={beta}></span> must not be explicable only in terms of a combination of dual-correlates <span class="math" set:html={thetaSum}></span>.</p>
 
-      <p>Of course, a set of <span class="math" set:html={capitalTheta}></span>s is to be expected in the relationship between <span class="math" set:html={alpha}></span> and <span class="math" set:html={beta}></span>, but the question is: are <span class="math" set:html={alpha}></span> and <span class="math" set:html={beta}></span> still causally associated in the absence of any <span class="math" set:html={theta}></span>. That is it say, if we have:</p>
+      <p>Of course, a set of <span class="math" set:html={theta}></span>s is to be expected in the relationship between <span class="math" set:html={alpha}></span> and <span class="math" set:html={beta}></span>, but the question is: are <span class="math" set:html={alpha}></span> and <span class="math" set:html={beta}></span> still causally associated in the absence of any <span class="math" set:html={theta}></span>. That is it say, if we have:</p>
 
       <div class="display-equation" set:html={utilityEquation}></div>
 
