@@ -1,0 +1,84 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base
+  title="Nature (Or: normativity pt. I) | Elisa Diop-Weyer"
+  description="Nature (Or: normativity pt. I), by emdw."
+>
+  <article class="essay-page">
+    <a class="back-link" href={`${base}/musings/`}>← Selected Outputs</a>
+
+    <header>
+      <h1>Nature (Or: normativity pt. I)</h1>
+    </header>
+
+    <div class="essay-body">
+      <p>Two issues I take with the extraction of normativity from so-called nature:</p>
+
+      <ol>
+        <li>I find that this if often an endeavor in cherry picking. The natural world is violent and we should look at <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2141672/" target="_blank" rel="noreferrer">much of it</a> and agree without hesitation that its violence has no place our human world. Also: Western medicine is the only reason that, in some parts of the world, most women don’t die during childbirth, that we live to 70, that infant mortality is so low, etc. Two examples that I are demonstrative that nature, insofar as nature is the world absent homo sapiens and the associated technological innovations, is nothing worthy of emulation or return;</li>
+        <li>Which takes me to my second point -- what is nature? What do we decry when we sob over our alienation from the natural world? Was homo sapiens, and the brain and evolutionary incentives that made language and technology adaptive not borne of nature? Is nature not all that there is? Where shall we say that humans became unnatural? Fire maybe, but is lightning not natural? The written word? But from whence do the hands we write with, the rocks and papyrus we write on, the ink we write with, the circumstances that made alloparental care and prosociality and thus language adaptive, come from if not nature?</li>
+      </ol>
+
+      <p>It seems to me that we are going to have to look beyond nature to find a solid foundation for our normativity.</p>
+    </div>
+
+    <p class="signature">-- emdw 20261007</p>
+  </article>
+</Base>
+
+<style>
+  .essay-page {
+    width: min(100%, 48rem);
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 3rem;
+    color: var(--muted);
+    font-size: 0.8em;
+    text-decoration: none;
+  }
+
+  .back-link:hover,
+  .back-link:focus-visible {
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-style: italic;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .essay-body {
+    margin-top: 3rem;
+  }
+
+  .essay-body p {
+    margin: 0 0 1.5rem;
+  }
+
+  ol {
+    margin: 0 0 1.5rem;
+    padding-left: 2.25rem;
+  }
+
+  ol li {
+    margin-bottom: 1.5rem;
+    padding-left: 0.2rem;
+  }
+
+  ol li::marker {
+    content: counter(list-item) ")  ";
+  }
+
+  .signature {
+    margin-top: 2.5rem;
+    text-align: right;
+  }
+</style>
