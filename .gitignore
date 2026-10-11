@@ -17,3 +17,4 @@ mockups/
 # scratch edit files (e.g. portfolio-why.txt)
 portfolio-why.txt
 *.edit.html
+.env*

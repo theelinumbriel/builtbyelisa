@@ -9,12 +9,15 @@ interface Props {
   description?: string;
   /** home hides the top bar and lets the page own the full viewport */
   home?: boolean;
+  /** private utilities should not be indexed or followed */
+  noindex?: boolean;
 }
 
 const {
   title = 'Elisa Diop-Weyer',
   description = 'Portfolio of Elisa Diop-Weyer',
   home = false,
+  noindex = false,
 } = Astro.props;
 
 // base-aware asset/links so the site works under the GitHub Pages subpath
@@ -27,6 +30,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow, noarchive" />}
     <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
     <link rel="apple-touch-icon" href={`${base}/apple-touch-icon.png`} />
     <title>{title}</title>

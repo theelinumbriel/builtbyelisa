@@ -1,0 +1,519 @@
+---
+import Base from '../layouts/Base.astro';
+
+const slots = [
+  { id: 'elisa-diop-weyer', label: 'Elisa Diop-Weyer', kind: 'name' },
+  { id: 'portfolio', label: 'Portfolio', kind: 'page title' },
+  { id: 'musings', label: 'Musings', kind: 'page title' },
+  { id: 'about', label: 'About', kind: 'page title' },
+  { id: 'contact', label: 'Contact', kind: 'page title' },
+];
+---
+
+<Base title="Handwriting | Elisa Diop-Weyer" description="Private handwriting asset manager." noindex={true}>
+  <section class="admin-shell" data-handwriting-admin>
+    <header class="admin-heading">
+      <div>
+        <p class="eyebrow">Private utility</p>
+        <h1>Handwriting</h1>
+      </div>
+      <a href="/">View site ↗</a>
+    </header>
+
+    <p class="intro">Replace the handwritten name and page titles used throughout the portfolio. Uploads are converted to black and take effect without a code change.</p>
+    <p class="notice" data-notice aria-live="polite"></p>
+
+    <section class="login-panel" data-login-panel>
+      <form data-login-form>
+        <label for="handwriting-password">Password</label>
+        <div class="login-row">
+          <input id="handwriting-password" name="password" type="password" autocomplete="current-password" required autofocus />
+          <button type="submit">Enter</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="workspace" data-workspace hidden>
+      <div class="session-row">
+        <p>Choose a slot, preview the SVG, then replace it.</p>
+        <button class="text-button" type="button" data-logout>Log out</button>
+      </div>
+
+      <ol class="asset-list">
+        {
+          slots.map((slot, index) => (
+            <li class="asset" data-asset data-slot={slot.id}>
+              <div class="asset-name">
+                <span class="index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <h2>{slot.label}</h2>
+                  <p>{slot.kind} · <code>{slot.id}.svg</code></p>
+                </div>
+              </div>
+
+              <div class="preview" data-preview>
+                <img
+                  src={`/api/handwriting?slot=${slot.id}`}
+                  data-current-src={`/api/handwriting?slot=${slot.id}`}
+                  data-fallback-src={`/handwriting/${slot.id}.svg`}
+                  alt={`${slot.label} handwriting preview`}
+                />
+              </div>
+
+              <div class="asset-actions">
+                <label class="file-control">
+                  <span>Choose SVG</span>
+                  <input type="file" accept="image/svg+xml,.svg" data-file />
+                </label>
+                <p data-file-name>Current version</p>
+                <button type="button" data-upload disabled>Replace</button>
+              </div>
+              <p class="asset-date" data-asset-date></p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="footnote">SVG only · 750 KB maximum · scripts, embedded media, and remote resources are rejected · previous files remain stored</p>
+    </section>
+  </section>
+</Base>
+
+<script>
+  type StatusPayload = {
+    authenticated: boolean;
+    slots?: Record<string, { uploadedAt?: string; originalName?: string } | null>;
+    error?: string;
+  };
+
+  const errorMessage = (error: unknown) =>
+    error instanceof Error ? error.message : 'Something went wrong. Please try again.';
+
+  const initialize = () => {
+    const root = document.querySelector<HTMLElement>('[data-handwriting-admin]');
+    if (!root || root.dataset.ready === 'true') return;
+    root.dataset.ready = 'true';
+
+    const loginPanel = root.querySelector<HTMLElement>('[data-login-panel]')!;
+    const workspace = root.querySelector<HTMLElement>('[data-workspace]')!;
+    const notice = root.querySelector<HTMLElement>('[data-notice]')!;
+    const loginForm = root.querySelector<HTMLFormElement>('[data-login-form]')!;
+    const passwordInput = loginForm.querySelector<HTMLInputElement>('input[name="password"]')!;
+
+    const announce = (message = '', tone: 'neutral' | 'error' | 'success' = 'neutral') => {
+      notice.textContent = message;
+      notice.dataset.tone = tone;
+    };
+
+    const showWorkspace = (show: boolean) => {
+      loginPanel.hidden = show;
+      workspace.hidden = !show;
+      if (!show) passwordInput.focus();
+    };
+
+    const applyMetadata = (slots: StatusPayload['slots']) => {
+      if (!slots) return;
+      root.querySelectorAll<HTMLElement>('[data-asset]').forEach((asset) => {
+        const entry = slots[asset.dataset.slot || ''];
+        const date = asset.querySelector<HTMLElement>('[data-asset-date]');
+        if (!date) return;
+        if (!entry?.uploadedAt) {
+          date.textContent = 'Using the checked-in original';
+          return;
+        }
+        const uploaded = new Date(entry.uploadedAt);
+        date.textContent = `Last replaced ${uploaded.toLocaleString()}${entry.originalName ? ` · ${entry.originalName}` : ''}`;
+      });
+    };
+
+    const checkSession = async () => {
+      try {
+        const response = await fetch('/api/handwriting?action=status', {
+          credentials: 'same-origin',
+          cache: 'no-store',
+        });
+        const data = await response.json() as StatusPayload;
+        showWorkspace(Boolean(data.authenticated));
+        if (data.authenticated) applyMetadata(data.slots);
+      } catch {
+        showWorkspace(false);
+        announce('The handwriting service is unavailable.', 'error');
+      }
+    };
+
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = loginForm.querySelector<HTMLButtonElement>('button')!;
+      button.disabled = true;
+      button.textContent = 'Checking…';
+      announce();
+      try {
+        const response = await fetch('/api/handwriting', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'login', password: passwordInput.value }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Unable to sign in.');
+        passwordInput.value = '';
+        showWorkspace(true);
+        announce('Signed in.', 'success');
+        await checkSession();
+      } catch (error) {
+        announce(errorMessage(error), 'error');
+        passwordInput.select();
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Enter';
+      }
+    });
+
+    root.querySelector<HTMLButtonElement>('[data-logout]')?.addEventListener('click', async () => {
+      try {
+        await fetch('/api/handwriting', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'logout' }),
+        });
+      } finally {
+        showWorkspace(false);
+        announce('Signed out.');
+      }
+    });
+
+    root.querySelectorAll<HTMLElement>('[data-asset]').forEach((asset) => {
+      const slot = asset.dataset.slot || '';
+      const fileInput = asset.querySelector<HTMLInputElement>('[data-file]')!;
+      const fileName = asset.querySelector<HTMLElement>('[data-file-name]')!;
+      const upload = asset.querySelector<HTMLButtonElement>('[data-upload]')!;
+      const image = asset.querySelector<HTMLImageElement>('img')!;
+      let previewUrl = '';
+
+      image.addEventListener('error', () => {
+        const fallback = image.dataset.fallbackSrc;
+        if (fallback && image.src !== new URL(fallback, location.href).href) image.src = fallback;
+      });
+
+      fileInput.addEventListener('change', () => {
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        const file = fileInput.files?.[0];
+        if (!file) {
+          image.src = image.dataset.currentSrc || image.src;
+          fileName.textContent = 'Current version';
+          upload.disabled = true;
+          return;
+        }
+        if (!file.name.toLowerCase().endsWith('.svg') || file.size > 750_000) {
+          announce('Choose an .svg file smaller than 750 KB.', 'error');
+          fileInput.value = '';
+          upload.disabled = true;
+          return;
+        }
+        previewUrl = URL.createObjectURL(file);
+        image.src = previewUrl;
+        fileName.textContent = `${file.name} · ${Math.max(1, Math.round(file.size / 1024))} KB`;
+        upload.disabled = false;
+        announce('Preview only. Select Replace to publish it.');
+      });
+
+      upload.addEventListener('click', async () => {
+        const file = fileInput.files?.[0];
+        if (!file) return;
+        upload.disabled = true;
+        upload.textContent = 'Replacing…';
+        announce();
+        try {
+          const form = new FormData();
+          form.set('slot', slot);
+          form.set('file', file);
+          const response = await fetch('/api/handwriting', {
+            method: 'POST',
+            credentials: 'same-origin',
+            body: form,
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || 'Unable to save the SVG.');
+
+          if (previewUrl) URL.revokeObjectURL(previewUrl);
+          previewUrl = '';
+          fileInput.value = '';
+          fileName.textContent = 'Current version';
+          const current = `/api/handwriting?slot=${encodeURIComponent(slot)}&v=${Date.now()}`;
+          image.dataset.currentSrc = current;
+          image.src = current;
+          const date = asset.querySelector<HTMLElement>('[data-asset-date]');
+          if (date) date.textContent = `Last replaced ${new Date(data.uploadedAt).toLocaleString()} · ${file.name}`;
+          announce(`${file.name} is now live for ${slot}.`, 'success');
+        } catch (error) {
+          announce(errorMessage(error), 'error');
+          upload.disabled = false;
+        } finally {
+          upload.textContent = 'Replace';
+        }
+      });
+    });
+
+    void checkSession();
+  };
+
+  document.addEventListener('astro:page-load', initialize);
+  initialize();
+</script>
+
+<style>
+  :global(main) {
+    padding-top: 1.5rem;
+  }
+
+  .admin-shell {
+    max-width: 68rem;
+    margin: 0 auto;
+  }
+
+  .admin-heading,
+  .session-row,
+  .login-row,
+  .asset-name,
+  .asset-actions {
+    display: flex;
+    align-items: baseline;
+  }
+
+  .admin-heading,
+  .session-row {
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .admin-heading {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--fg);
+  }
+
+  .admin-heading h1 {
+    font-style: italic;
+  }
+
+  .eyebrow,
+  .asset-name p,
+  .asset-actions p,
+  .asset-date,
+  .footnote {
+    color: var(--muted);
+  }
+
+  .eyebrow,
+  .asset-name p,
+  .asset-actions p,
+  .asset-date,
+  .footnote,
+  code {
+    font-size: 0.78rem;
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  .intro {
+    max-width: 48rem;
+    margin-top: 1.5rem;
+  }
+
+  .notice {
+    min-height: 1.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .notice[data-tone='error'] {
+    color: #b00020;
+  }
+
+  .notice[data-tone='success']::before {
+    content: '✓ ';
+  }
+
+  .login-panel {
+    max-width: 30rem;
+    margin-top: 2.25rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--fg);
+  }
+
+  .login-panel label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-style: italic;
+  }
+
+  .login-row {
+    gap: 0.5rem;
+  }
+
+  input[type='password'] {
+    min-width: 0;
+    flex: 1;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--fg);
+    border-radius: 0;
+    padding: 0.6rem 0.7rem;
+  }
+
+  button,
+  .file-control {
+    font: inherit;
+    color: inherit;
+    background: var(--bg);
+    border: 1px solid var(--fg);
+    border-radius: 0;
+    padding: 0.55rem 0.75rem;
+    cursor: pointer;
+  }
+
+  button:hover:not(:disabled),
+  .file-control:hover {
+    color: var(--bg);
+    background: var(--fg);
+  }
+
+  button:disabled {
+    color: var(--muted);
+    border-color: var(--muted);
+    cursor: not-allowed;
+  }
+
+  .workspace {
+    margin-top: 1.5rem;
+  }
+
+  .text-button {
+    border: 0;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .text-button:hover {
+    color: inherit;
+    background: transparent;
+    opacity: 0.55;
+  }
+
+  .asset-list {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    border-top: 1px solid var(--fg);
+  }
+
+  .asset {
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.8fr) minmax(16rem, 1.3fr) minmax(13rem, 0.8fr);
+    gap: 0.75rem 1.5rem;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--fg);
+  }
+
+  .asset-name {
+    gap: 1rem;
+  }
+
+  .index {
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .preview {
+    min-height: 5.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-image: linear-gradient(45deg, #f2f2f2 25%, transparent 25%), linear-gradient(-45deg, #f2f2f2 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f2f2f2 75%), linear-gradient(-45deg, transparent 75%, #f2f2f2 75%);
+    background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+    background-size: 12px 12px;
+  }
+
+  .preview img {
+    display: block;
+    width: auto;
+    height: 3.4rem;
+    max-width: 100%;
+  }
+
+  .asset-actions {
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .file-control input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .asset-actions p {
+    flex-basis: 100%;
+  }
+
+  .asset-date {
+    grid-column: 2 / -1;
+  }
+
+  .footnote {
+    margin-top: 1rem;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 860px) {
+    .asset {
+      grid-template-columns: minmax(10rem, 0.8fr) minmax(14rem, 1.2fr);
+    }
+
+    .asset-actions {
+      grid-column: 1 / -1;
+    }
+
+    .asset-date {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 580px) {
+    .admin-heading,
+    .session-row {
+      align-items: flex-start;
+    }
+
+    .asset {
+      grid-template-columns: 1fr;
+    }
+
+    .asset-actions,
+    .asset-date {
+      grid-column: 1;
+    }
+
+    .preview {
+      justify-content: flex-start;
+    }
+  }
+</style>
