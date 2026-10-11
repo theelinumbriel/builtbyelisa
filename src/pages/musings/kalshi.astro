@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base
+  title="Kalshi | Elisa Diop-Weyer"
+  description="A startup idea for a meta-Kalshi, by emdw."
+>
+  <article class="essay-page">
+    <a class="back-link" href={`${base}/musings/`}>← Selected Outputs</a>
+
+    <header>
+      <p class="tag">startup idea</p>
+      <h1>Kalshi</h1>
+    </header>
+
+    <div class="essay-body">
+      <p>Startup idea: a secondary Kalshi, a meta-Kalshi if you will, as in you can buy event contracts for the prices in the primary market. So you can exploit pricing deltas between the two markets. I think would be pretty fun arbitrage. Call it Lishak or Lakish or Alshik or something like that.</p>
+    </div>
+
+    <p class="signature">-- emdw 20261011</p>
+  </article>
+</Base>
+
+<style>
+  .essay-page {
+    width: min(100%, 48rem);
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 3rem;
+    color: var(--muted);
+    font-size: 0.8em;
+    text-decoration: none;
+  }
+
+  .back-link:hover,
+  .back-link:focus-visible {
+    text-decoration: underline;
+  }
+
+  .tag {
+    margin: 0 0 0.5rem;
+    color: var(--muted);
+    font-size: 0.8em;
+    text-transform: lowercase;
+  }
+
+  h1 {
+    font-style: italic;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .essay-body {
+    margin-top: 3rem;
+  }
+
+  .essay-body p {
+    margin: 0 0 1.5rem;
+  }
+
+  .signature {
+    margin-top: 2.5rem;
+    text-align: right;
+  }
+</style>
