@@ -15,6 +15,13 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: 'aniso',
+    href: 'https://aniso-three.vercel.app',
+    external: true,
+    rationale:
+      'A public, read-only agent-based simulation for studying whether stable signaling conventions can emerge from initially unassigned calls under stochastic threat exposure and selection. Abstract agents encounter three threat classes and can emit a, ni, or so; the observer tracks population-level outcomes and per-agent interaction histories.',
+  },
+  {
     name: 'helloword',
     href: 'https://theelinumbriel.github.io/helloword/',
     external: true,
