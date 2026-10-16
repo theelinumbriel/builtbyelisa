@@ -1,0 +1,106 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base
+  title="Misc. | Elisa Diop-Weyer"
+  description="Miscellaneous thoughts, by emdw."
+>
+  <article class="essay-page">
+    <a class="back-link" href={`${base}/musings/`}>← Selected Outputs</a>
+
+    <header>
+      <h1>Misc.</h1>
+    </header>
+
+    <div class="essay-body">
+      <ol class="main-list">
+        <li>Complexity in abundance is evidence of selection;</li>
+        <li>That which can be destroyed by truth should be;</li>
+        <li>
+          I hate startup culture but I think I would love a startup culture populated by virtue ethicists;
+
+          <ol class="sub-list" type="a">
+            <li>More ink should be spilled by Durkheim aficionados and aficionadas re startups as an exercise in social engineering; small clusters of people coming together in a relatively complementary (organic) way but rallying around a shared, often relatively abstract vision, perhaps losing themselves in it in the mechanical manner (this is an Oppenheimer reference re Colonel Pash and interrogation methods for those with eyes to see);</li>
+          </ol>
+        </li>
+        <li>
+          “We live surrounded by an endless multitude of mysteries” -- I love that Lev Shernov opens Athens and Jerusalem thus;
+
+          <ol class="sub-list" type="a">
+            <li>Athens and Jerusalem are both explanatory and prescriptive; they are functionally symmetrical;</li>
+            <li>There are all kinds of fun Hegelian pretzels you can twist yourself into, re all the ways one’s Jerusalem is sublated in one’s Athens and one’s Athens is sublated in one’s Jerusalem.</li>
+          </ol>
+        </li>
+      </ol>
+    </div>
+
+    <p class="signature">-- emdw 20261016</p>
+  </article>
+</Base>
+
+<style>
+  .essay-page {
+    width: min(100%, 48rem);
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 3rem;
+    color: var(--muted);
+    font-size: 0.8em;
+    text-decoration: none;
+  }
+
+  .back-link:hover,
+  .back-link:focus-visible {
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-style: italic;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .essay-body {
+    margin-top: 3rem;
+  }
+
+  .main-list,
+  .sub-list {
+    margin: 0 0 1.5rem;
+    padding-left: 2.25rem;
+  }
+
+  .main-list > li {
+    margin-bottom: 1rem;
+    padding-left: 0.2rem;
+  }
+
+  .main-list > li::marker {
+    content: "(" counter(list-item) ")  ";
+  }
+
+  .sub-list {
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+
+  .sub-list > li {
+    margin-bottom: 0.65rem;
+    padding-left: 0.2rem;
+  }
+
+  .sub-list > li::marker {
+    content: counter(list-item, lower-alpha) ".  ";
+  }
+
+  .signature {
+    margin-top: 2.5rem;
+    text-align: right;
+  }
+</style>
