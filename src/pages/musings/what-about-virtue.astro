@@ -1,0 +1,159 @@
+---
+import Base from '../../layouts/Base.astro';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const typeset = (latex: string) =>
+  katex.renderToString(latex, {
+    output: 'htmlAndMathml',
+    throwOnError: true,
+  });
+
+const directionEquation = typeset(
+  String.raw`\mathit{Direction}_{t} = \beta_{0}\mathit{leader}_{t} + \beta_{1}X_{t} + u_{t}`,
+);
+const betaZero = typeset(String.raw`\beta_{0}`);
+---
+
+<Base
+  title="What about virtue? | Elisa Diop-Weyer"
+  description="What about virtue?, by emdw."
+>
+  <article class="essay-page">
+    <a class="back-link" href={`${base}/musings/`}>← Selected Outputs</a>
+
+    <header>
+      <h1>What about virtue?</h1>
+    </header>
+
+    <div class="essay-body">
+      <p>I shopped a class on medical ethics and halfway through the first lecture the girl with whom I was sitting scribbled on her notebook: “What about virtue?” -- I borrow her acclamation for this title.</p>
+
+      <p>Thinking about deontology today re tech CEOs:</p>
+
+      <ol class="main-list">
+        <li>LLMs and ontology expand the dystopia -- utopia option horizon dramatically;</li>
+        <li>The expansion seems symmetrical on both normative tails, which I think makes it difficult for a consequentialist to make a normative statement about these technologies. There is too much stochasticity involved to predict what the consequence of a given technological development will be;</li>
+        <li>A deontologist making a normative statement about the virtue of a CEO can make a normative statement using information that exists (publishes things a CEO has said). So it is impossible to be a consequentialist; we must default to deontology;</li>
+        <li>
+          Which is why, on my view, there is much public angst re the personal lives and motivations of an Amodei, Altman, Karp, Thiel, Musk<sup id="fnref-1"><a href="#fn-1" aria-label="Footnote 1">1</a></sup> etc.; because we were all forced into deontology to make judgements about the technologies they spearhead; we must trust their judgement given the breadth of the option horizon.
+
+          <ol class="sub-list" type="a">
+            <li>In general, if you model <span class="math" set:html={directionEquation}></span>, <span class="math" set:html={betaZero}></span> for a tech company &gt; <span class="math" set:html={betaZero}></span> for the median government or NGO in 2026, by nature (virtue?) of regulation, bureaucracy etc. For better and for worse.</li>
+          </ol>
+        </li>
+      </ol>
+
+      <section class="footnotes" aria-label="Footnotes">
+        <ol>
+          <li id="fn-1">I list him not because I think X.ai is a frontier lab (I don’t); I’m mostly thinking about Starlink and Ukraine. <a class="footnote-back" href="#fnref-1" aria-label="Back to footnote reference">↩</a></li>
+        </ol>
+      </section>
+    </div>
+
+    <p class="signature">-- emdw 20261019</p>
+  </article>
+</Base>
+
+<style>
+  .essay-page {
+    width: min(100%, 48rem);
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 3rem;
+    color: var(--muted);
+    font-size: 0.8em;
+    text-decoration: none;
+  }
+
+  .back-link:hover,
+  .back-link:focus-visible {
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-style: italic;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .essay-body {
+    margin-top: 3rem;
+  }
+
+  .essay-body > p {
+    margin: 0 0 1.5rem;
+  }
+
+  .main-list,
+  .sub-list {
+    margin: 0 0 1.5rem;
+    padding-left: 2.25rem;
+  }
+
+  .main-list > li {
+    margin-bottom: 1rem;
+    padding-left: 0.2rem;
+  }
+
+  .main-list > li::marker {
+    content: "(" counter(list-item) ")  ";
+  }
+
+  .sub-list {
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+
+  .sub-list > li {
+    padding-left: 0.2rem;
+  }
+
+  .sub-list > li::marker {
+    content: counter(list-item, lower-alpha) ".  ";
+  }
+
+  .math {
+    white-space: nowrap;
+  }
+
+  .math :global(.katex) {
+    font-size: 1em;
+  }
+
+  sup {
+    line-height: 0;
+  }
+
+  sup a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .footnotes {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.14);
+    font-size: 0.85em;
+  }
+
+  .footnotes ol {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+
+  .footnote-back {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .signature {
+    margin-top: 2.5rem;
+    text-align: right;
+  }
+</style>
