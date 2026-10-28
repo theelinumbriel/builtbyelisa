@@ -39,6 +39,11 @@ const slots = [
         <button class="text-button" type="button" data-logout>Log out</button>
       </div>
 
+      <div class="bundle-import">
+        <label class="file-control"><span>Import Freehand portfolio file</span><input type="file" accept=".json,application/json" data-bundle /></label>
+        <a href="https://freehand.s57fwmgg9z.chatgpt.site" target="_blank" rel="noreferrer">Open Freehand ↗</a>
+        <p>In Freehand, choose Portfolio → Download portfolio file. Import it here, check each preview, then select Replace for the labels you want to publish.</p>
+      </div>
       <ol class="asset-list">
         {
           slots.map((slot, index) => (
@@ -183,6 +188,8 @@ const slots = [
       }
     });
 
+    const importedFiles = new Map<string, File>();
+    const stageAsset = new Map<string, (file: File) => void>();
     root.querySelectorAll<HTMLElement>('[data-asset]').forEach((asset) => {
       const slot = asset.dataset.slot || '';
       const fileInput = asset.querySelector<HTMLInputElement>('[data-file]')!;
@@ -196,9 +203,8 @@ const slots = [
         if (fallback && image.src !== new URL(fallback, location.href).href) image.src = fallback;
       });
 
-      fileInput.addEventListener('change', () => {
+      const stage = (file?: File) => {
         if (previewUrl) URL.revokeObjectURL(previewUrl);
-        const file = fileInput.files?.[0];
         if (!file) {
           image.src = image.dataset.currentSrc || image.src;
           fileName.textContent = 'Current version';
@@ -215,11 +221,14 @@ const slots = [
         image.src = previewUrl;
         fileName.textContent = `${file.name} · ${Math.max(1, Math.round(file.size / 1024))} KB`;
         upload.disabled = false;
+        importedFiles.set(slot, file);
         announce('Preview only. Select Replace to publish it.');
-      });
+      };
+      stageAsset.set(slot, stage);
+      fileInput.addEventListener('change', () => { importedFiles.delete(slot); stage(fileInput.files?.[0]); });
 
       upload.addEventListener('click', async () => {
-        const file = fileInput.files?.[0];
+        const file = importedFiles.get(slot) ?? fileInput.files?.[0];
         if (!file) return;
         upload.disabled = true;
         upload.textContent = 'Replacing…';
@@ -239,6 +248,7 @@ const slots = [
           if (previewUrl) URL.revokeObjectURL(previewUrl);
           previewUrl = '';
           fileInput.value = '';
+          importedFiles.delete(slot);
           fileName.textContent = 'Current version';
           const current = `/api/handwriting?slot=${encodeURIComponent(slot)}&v=${Date.now()}`;
           image.dataset.currentSrc = current;
@@ -255,6 +265,25 @@ const slots = [
       });
     });
 
+    root.querySelector<HTMLInputElement>('[data-bundle]')!.addEventListener('change', async (event) => {
+      const input = event.target as HTMLInputElement;
+      const file = input.files?.[0];
+      if (!file) return;
+      try {
+        if (file.size > 8_000_000) throw new Error('Choose a Freehand export smaller than 8 MB.');
+        const pack = JSON.parse(await file.text());
+        if (pack.format !== 'freehand-portfolio' || pack.version !== 1 || !Array.isArray(pack.assets)) throw new Error('Choose the portfolio.freehand.json file exported from Freehand.');
+        const entries: Array<{slot: string; svg: string}> = [];
+        for (const asset of pack.assets) {
+          if (!stageAsset.has(asset.slot) || typeof asset.svg !== 'string' || new TextEncoder().encode(asset.svg).length > 750_000) throw new Error('The portfolio file contains an invalid label.');
+          entries.push(asset);
+        }
+        if (!entries.length) throw new Error('This export has no completed labels yet.');
+        for (const asset of entries) stageAsset.get(asset.slot)!(new File([asset.svg], `${asset.slot}.svg`, {type:'image/svg+xml'}));
+        announce(`${entries.length} labels ready to review. Nothing is published until you select Replace.`);
+      } catch (error) { announce(errorMessage(error), 'error'); }
+      input.value = '';
+    });
     void checkSession();
   };
 
@@ -473,6 +502,9 @@ const slots = [
   .footnote {
     margin-top: 1rem;
   }
+  .bundle-import {margin:1.5rem 0;padding:1rem;border:1px solid var(--fg)}
+  .bundle-import a {margin-left:1rem;font-size:.8rem}
+  .bundle-import p {font-size:.8rem;margin-top:1rem;color:var(--muted)}
 
   [hidden] {
     display: none !important;

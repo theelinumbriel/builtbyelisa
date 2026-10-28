@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#ffffff"><meta name="apple-mobile-web-app-capable" content="yes"><title>Manual</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<canvas id="canvas" aria-label="Drawing canvas. Use a Pencil, your finger, or a mouse to sketch."></canvas>
+<header><span id="status" class="sr-only" role="status">Opening…</span><div class="header-right"><button id="pull"><svg class="icon" aria-hidden="true"><use href="/icons.svg#globe"/></svg><span>Pull a page</span></button><button id="connect" aria-label="Connect iPad" title="Connect iPad"><svg class="icon" aria-hidden="true"><use href="/icons.svg#tablet"/></svg><span>Connect iPad</span></button><button id="save" class="primary">Save</button></div></header>
+<div class="tools" role="toolbar" aria-label="Drawing tools">
+ <button data-tool="pen" class="active" aria-pressed="true" title="Pen (P)" aria-label="Pen"><svg class="icon" aria-hidden="true"><use href="/icons.svg#pen-line"/></svg></button><button data-tool="eraser" aria-pressed="false" title="Stroke eraser (E)" aria-label="Eraser"><svg class="icon" aria-hidden="true"><use href="/icons.svg#eraser"/></svg></button><button data-tool="hand" aria-pressed="false" title="Move canvas (H)" aria-label="Move canvas"><svg class="icon" aria-hidden="true"><use href="/icons.svg#hand"/></svg></button>
+ <span class="separator"></span><input id="color" type="color" value="#171717" aria-label="Ink color"><select id="width" aria-label="Pen width"><option value="2">Fine</option><option value="4" selected>Medium</option><option value="8">Bold</option></select>
+ <span class="separator"></span><button id="undo" disabled title="Undo" aria-label="Undo"><svg class="icon" aria-hidden="true"><use href="/icons.svg#undo-2"/></svg></button><button id="redo" disabled title="Redo" aria-label="Redo"><svg class="icon" aria-hidden="true"><use href="/icons.svg#redo-2"/></svg></button><button id="fit" title="Fit drawing" aria-label="Fit drawing"><svg class="icon" aria-hidden="true"><use href="/icons.svg#maximize"/></svg></button><button id="more" title="Screen options" aria-label="Screen options"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ellipsis"/></svg></button>
+</div>
+<div id="hint">A blank page. Start anywhere.</div>
+<footer><nav id="tabs" aria-label="Screens"></nav><button id="add" aria-label="Add screen"><svg class="icon" aria-hidden="true"><use href="/icons.svg#plus"/></svg></button><button id="rename" aria-label="Rename current screen" title="Rename current screen">Rename</button></footer>
+<dialog id="modal"><div class="dialog-head"><h1 id="dialog-title"></h1><button id="close" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="/icons.svg#x"/></svg></button></div><div id="dialog-body"></div></dialog>
+<div id="toast" role="status"></div><input id="image-file" type="file" accept="image/*" hidden>
+<script type="module" src="/app.js"></script>
+</body></html>

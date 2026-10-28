@@ -27,3 +27,9 @@ Accepted slots:
 - `musings`
 - `about`
 - `contact`
+
+## Freehand portfolio import
+
+Open https://freehand.s57fwmgg9z.chatgpt.site, resume your handwriting room, and choose **Portfolio**. Download `portfolio.freehand.json`. On https://emdw.vercel.app/handwriting, sign in, import that file, review the previews, then select **Replace** for each intended label. Importing alone never changes the live portfolio.
+
+Freehand uses completed handwritten wordmarks first, then composes missing labels from available alphabet glyphs. Missing glyphs are reported in the export dialog. The package contains SVG artwork and an alphabet sprite, never room access keys. The portfolio displays the five label SVGs; the alphabet sprite remains in the export as reusable source material.

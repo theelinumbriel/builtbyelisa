@@ -1,0 +1,1 @@
+{"name":"manual","version":"1.0.0","private":true,"type":"module","description":"An iPad sketch and annotation input layer, saved on your Mac.","scripts":{"start":"node server/server.mjs","test":"node --test"},"dependencies":{"playwright-core":"^1.56.1","qrcode":"^1.5.4"}}

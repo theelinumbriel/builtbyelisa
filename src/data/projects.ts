@@ -15,6 +15,12 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: 'manual',
+    href: '/portfolio/manual',
+    rationale:
+      'A visual input layer for building interfaces with AI. Sketch named screens on an iPad, save them to a Mac, and use the drawings as design references. Capture a working web page onto another screen to annotate the next revision.',
+  },
+  {
     name: 'aniso',
     href: 'https://aniso-three.vercel.app',
     external: true,
