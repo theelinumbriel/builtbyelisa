@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import HandwrittenLabel from '../../components/HandwrittenLabel.astro';
-import { projects } from '../../data/projects';
+import { projects, workInProgress } from '../../data/projects';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const resolveHref = (href: string) => (href.startsWith('/') ? base + href : href);
@@ -44,6 +44,17 @@ const resolveHref = (href: string) => (href.startsWith('/') ? base + href : href
       }
     </ul>
 
+    <section class="work-in-progress" aria-labelledby="work-in-progress-title">
+      <h2 id="work-in-progress-title">Work in progress</h2>
+      <ul class="list">
+        {workInProgress.map((p) => (
+          <li class="proj">
+            <a href={resolveHref(p.href!)}>{p.name}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
     <section class="feedback" aria-label="report an issue">
       <p class="fb-note">If you experience any issues, please <a href={`${base}/contact`}>let me know</a>.</p>
     </section>
@@ -67,6 +78,19 @@ const resolveHref = (href: string) => (href.startsWith('/') ? base + href : href
 
   .proj {
     margin: 0;
+  }
+
+  .work-in-progress {
+    margin-top: 3rem;
+    max-width: 42rem;
+  }
+
+  .work-in-progress h2 {
+    font-style: italic;
+  }
+
+  .work-in-progress .list {
+    margin-top: 0.75rem;
   }
 
   /* gallery dimming: pointing at one project lowers the lights on the rest */

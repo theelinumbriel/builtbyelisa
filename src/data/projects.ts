@@ -51,3 +51,14 @@ export const projects: Project[] = [
   },
   { name: 'Work at the Learning Lab', href: '/portfolio/learning-lab' },
 ];
+
+export const workInProgress: Project[] = [
+  {
+    name: 'closed loop auditory stimulation via frontal electrode data',
+    href: '/portfolio/closed-loop-auditory-stimulation',
+  },
+  {
+    name: 'on the evolution of private property',
+    href: '/portfolio/evolution-of-private-property',
+  },
+];
