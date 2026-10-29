@@ -250,8 +250,6 @@ main {
      word glides to its spot at a constant size instead of scaling/"exploding". */
   ::view-transition-old(nav-portfolio),
   ::view-transition-new(nav-portfolio),
-  ::view-transition-old(nav-musings),
-  ::view-transition-new(nav-musings),
   ::view-transition-old(nav-about),
   ::view-transition-new(nav-about),
   ::view-transition-old(nav-contact),

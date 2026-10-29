@@ -4,7 +4,6 @@ import Base from '../layouts/Base.astro';
 const slots = [
   { id: 'elisa-diop-weyer', label: 'Elisa Diop-Weyer', kind: 'name' },
   { id: 'portfolio', label: 'Portfolio', kind: 'page title' },
-  { id: 'musings', label: 'Musings', kind: 'page title' },
   { id: 'about', label: 'About', kind: 'page title' },
   { id: 'contact', label: 'Contact', kind: 'page title' },
 ];
@@ -275,6 +274,7 @@ const slots = [
         if (pack.format !== 'freehand-portfolio' || pack.version !== 1 || !Array.isArray(pack.assets)) throw new Error('Choose the portfolio.freehand.json file exported from Freehand.');
         const entries: Array<{slot: string; svg: string}> = [];
         for (const asset of pack.assets) {
+          if (asset.slot === 'musings') continue;
           if (!stageAsset.has(asset.slot) || typeof asset.svg !== 'string' || new TextEncoder().encode(asset.svg).length > 750_000) throw new Error('The portfolio file contains an invalid label.');
           entries.push(asset);
         }

@@ -24,12 +24,13 @@ Accepted slots:
 
 - `elisa-diop-weyer`
 - `portfolio`
-- `musings`
 - `about`
 - `contact`
 
 ## Freehand portfolio import
 
-Open https://freehand.s57fwmgg9z.chatgpt.site, resume your handwriting room, and choose **Portfolio**. Download `portfolio.freehand.json`. On https://emdw.vercel.app/handwriting, sign in, import that file, review the previews, then select **Replace** for each intended label. Importing alone never changes the live portfolio.
+Open https://freehand.s57fwmgg9z.chatgpt.site, resume your handwriting room, and choose **Portfolio**. Download `portfolio.freehand.json`. On https://elisadiopweyer.vercel.app/handwriting, sign in, import that file, review the previews, then select **Replace** for each intended label. Importing alone never changes the live portfolio.
 
-Freehand uses completed handwritten wordmarks first, then composes missing labels from available alphabet glyphs. Missing glyphs are reported in the export dialog. The package contains SVG artwork and an alphabet sprite, never room access keys. The portfolio displays the five label SVGs; the alphabet sprite remains in the export as reusable source material.
+Freehand uses completed handwritten wordmarks first, then composes missing labels from available alphabet glyphs. Missing glyphs are reported in the export dialog. The package contains SVG artwork and an alphabet sprite, never room access keys. The portfolio displays the four label SVGs; the alphabet sprite remains in the export as reusable source material.
+
+This copy uses its own Vercel project. Handwriting uploads require a separate private Blob store and HANDWRITING_PASSWORD; the original project’s credentials are not shared. Public labels use the checked-in snapshot until storage is configured.

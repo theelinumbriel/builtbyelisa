@@ -1,14 +1,13 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { get, put } from '@vercel/blob';
 
-const COOKIE_NAME = 'emdw_handwriting_session';
+const COOKIE_NAME = 'elisadiopweyer_handwriting_session';
 const SESSION_SECONDS = 8 * 60 * 60;
 const MAX_SVG_BYTES = 750_000;
 const MANIFEST_PATH = 'handwriting/manifest.json';
 const SLOTS = new Set([
   'elisa-diop-weyer',
   'portfolio',
-  'musings',
   'about',
   'contact',
 ]);

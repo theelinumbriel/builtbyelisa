@@ -11,22 +11,16 @@ const equation = katex.renderToString(
 ---
 
 <Base
-  title="Closed loop auditory stimulation via frontal electrode data | Elisa Diop-Weyer"
-  description="Work in progress: phase-dependent closed loop auditory stimulation using frontal electrode data."
+  title="Closed-Loop Auditory Stimulation via Frontal Electrode Data | Elisa Diop-Weyer"
+  description="Work in Progress: phase-dependent closed loop auditory stimulation using frontal electrode data."
 >
   <article class="research">
     <header>
-      <p class="status">Work in progress</p>
-      <h1 class="title">closed loop auditory stimulation via frontal electrode data</h1>
+      <p class="status">Work in Progress</p>
+      <h1 class="title">Closed-Loop Auditory Stimulation via Frontal Electrode Data</h1>
     </header>
 
     <section>
-      <h2>Broad topic</h2>
-      <p>Phase-dependent closed loop auditory stimulation using frontal electrode data; specifying when the channel provides a sufficiently reliable phase estimate to trigger audio stimulation.</p>
-    </section>
-
-    <section>
-      <h2>Specific research question</h2>
       <p>Under what circumstances does a single frontal electrode provide a sufficiently reliable estimate of alpha or theta phase with respect to multichannel EEG data? Can a confidence gate use information gathered by a Fz electrode to determine when to trigger auditory stimulation, and what is the magnitude of coverage-accuracy tradeoff?</p>
     </section>
 
@@ -37,7 +31,7 @@ const equation = katex.renderToString(
     </section>
 
     <section>
-      <h2>Hypotheses and rationale</h2>
+      <h2>Hypotheses and Rationale</h2>
       <ul>
         <li>H1: Absolute circular phase error between Fz and the multichannel reference is higher for alpha than for theta cycles, as theta cycles are longer such that a fixed timing error occupies a smaller fraction of a cycle.</li>
         <li>H2: Absolute circular phase error between Fz and the multichannel reference is higher during phasic REM than tonic REM, as rapid eye movements may contaminate the data garnered by the frontal electrode during phasic REM.</li>
@@ -46,7 +40,7 @@ const equation = katex.renderToString(
     </section>
 
     <section>
-      <h2>Descriptive analysis</h2>
+      <h2>Descriptive Analysis</h2>
       <p>The unit of analysis is an individual time-bound alpha-targeted or theta-targeted sound event. The primary outcome variable is the absolute circular phase error, measured in degrees, between the Fz estimate and the multichannel frontal reference, which excludes the frontal electrode, at the onset of the stimulation. The error mechanically ranges from 0 to 180 degrees. I am also considering a binary agreement indicator variable as a secondary outcome variable, which I construct using the absolute circular phase error; given that the experimental targets are 90° apart, this binary variable is coded as 1 when the Fz estimate is within 45° of the multichannel-measured phase, as 45° represent the midpoint between neighboring phase categories.</p>
       <p>The predictor variables include target rhythm, REM substage, Fz target-band amplitude, Fz spectral prominence relative to neighboring frequencies, recent Fz phase stability, target phase, and elapsed time in the recording. These are all variables that a frontal electrode could measure before stimulation.</p>
       <p>The control variables include participant identity; the intercept of the regression accounts for time-invariant entity-specific fixed effects. The data analysis excludes RSN_013 given technical problems, and excludes pre-stimulus windows with missing samples or empty Fz data. Participant data are not excluded based on observed Fz accuracy.</p>
@@ -56,12 +50,12 @@ const equation = katex.renderToString(
     </section>
 
     <section>
-      <h2>Generating a decision rule</h2>
+      <h2>Generating a Decision Rule</h2>
       <p>I fit a regularized logistic model that predicts the probability that an Fz estimate falls within 45° of the reference, using different combinations of predictor variables, each combination constituting a different decision rule. At a low threshold, the decision rule accepts many opportunities but includes more errors, and at a high threshold, the decision rule improves accuracy with the consequence of forgoing high coverage. I trace this tradeoff by plotting the proportion of target agreement with respect to multichannel data against coverage. I compare different gated models to the ungated Fz model and to each other, designating which model forgoes the least coverage while maximizing accuracy.</p>
     </section>
 
     <section class="citations">
-      <h2>Key citations</h2>
+      <h2>Key Citations</h2>
       <ol>
         <li id="citation-jaramillo">Jaramillo, V., Hebron, H., Wong, S., Atzori, G., Bartsch, U., Dijk, D.-J., &amp; Violante, I. R. (2024). Closed-loop auditory stimulation targeting alpha and theta oscillations during rapid eye movement sleep induces phase-dependent power and frequency changes. <em>SLEEP, 47</em>(12), zsae193. <a href="https://doi.org/10.1093/sleep/zsae193">doi:10.1093/sleep/zsae193</a></li>
         <li>Bogner, L., Amacker, J., &amp; Wehrli, S. (2026). From brainwaves to soundwaves: A modular hdEEG framework for multichannel phase-targeted acoustic stimulation. <em>Current Directions in Biomedical Engineering, 12</em>(1), 57–60. <a href="https://doi.org/10.1515/cdbme-2026-0115">doi:10.1515/cdbme-2026-0115</a></li>
