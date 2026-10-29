@@ -50,7 +50,7 @@ export const softwareProjects: Project[] = [
     external: true,
     repo: 'https://github.com/theelinumbriel/aniso',
     rationale:
-      "One of my favorite papers in the evolutionary biology canon is Seyfarth et al.’s 1980 paper “Vervet monkey alarm calls: Semantic communication in a free-ranging primate.”\n\nThis project simulates the evolution of language by modeling the vervet monkeys in the Seyfarth paper as abstract agents that encounter three threat classes and can only emit three sounds: a, ni, or so. The goal is to study whether stable signaling conventions can emerge from initially unassigned calls under stochastic threat exposure and selection; the observer tracks population-level outcomes and per-agent interaction histories.",
+      "One of my favorite papers in the evolutionary biology canon is Seyfarth et al.’s 1980 paper <a href=\"https://doi.org/10.1016/S0003-3472(80)80097-2\" target=\"_blank\" rel=\"noopener\">“Vervet monkey alarm calls: Semantic communication in a free-ranging primate.”</a>\n\nThis project simulates the evolution of language by modeling the vervet monkeys in the Seyfarth paper as abstract agents that encounter three threat classes and can only emit three sounds: a, ni, or so. The goal is to study whether stable signaling conventions can emerge from initially unassigned calls under stochastic threat exposure and selection; the observer tracks population-level outcomes and per-agent interaction histories.",
   },
   {
     name: 'Helloword',
