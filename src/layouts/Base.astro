@@ -68,6 +68,78 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           btn.setAttribute('aria-expanded', String(open));
         });
 
+        // portfolio: hover-to-play on hardware videos. document-level delegation
+        // so it works on fresh page load, after view-transition navigation, and
+        // without caring when the <video> elements render.
+        const SPEAKER_MUTED = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>';
+        const SPEAKER_ON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>';
+        const crossed = (e: MouseEvent, player: Element) => {
+          const r = e.relatedTarget;
+          return !(r instanceof Element && player.contains(r));
+        };
+        document.addEventListener('mouseover', (e) => {
+          const t = e.target;
+          if (!(t instanceof Element)) return;
+          const player = t.closest('[data-player]');
+          if (!player || !crossed(e, player)) return;
+          const video = player.querySelector('video');
+          if (video) { const p = video.play(); if (p && p.catch) p.catch(() => {}); }
+        });
+        document.addEventListener('mouseout', (e) => {
+          const t = e.target;
+          if (!(t instanceof Element)) return;
+          const player = t.closest('[data-player]');
+          if (!player || !crossed(e, player)) return;
+          const video = player.querySelector('video');
+          if (video) { video.pause(); try { video.currentTime = 0; } catch (_) {} }
+        });
+        document.addEventListener('focusin', (e) => {
+          const t = e.target;
+          if (!(t instanceof Element)) return;
+          const player = t.closest('[data-player]');
+          if (!player) return;
+          const video = player.querySelector('video');
+          if (video) { const p = video.play(); if (p && p.catch) p.catch(() => {}); }
+        });
+        document.addEventListener('focusout', (e) => {
+          const t = e.target;
+          if (!(t instanceof Element)) return;
+          const player = t.closest('[data-player]');
+          if (!player) return;
+          const video = player.querySelector('video');
+          if (video) { video.pause(); try { video.currentTime = 0; } catch (_) {} }
+        });
+        document.addEventListener('click', (e) => {
+          const t = e.target;
+          if (!(t instanceof Element)) return;
+          const btn = t.closest('[data-sound]');
+          if (!btn) return;
+          e.stopPropagation();
+          const player = btn.closest('[data-player]');
+          const video = player && player.querySelector('video');
+          if (!video) return;
+          const nextMuted = !video.muted;
+          video.muted = nextMuted;
+          btn.setAttribute('aria-pressed', String(!nextMuted));
+          btn.setAttribute('aria-label', nextMuted ? 'Turn sound on' : 'Turn sound off');
+          const icon = btn.querySelector('[data-sound-icon]');
+          if (icon) icon.innerHTML = nextMuted ? SPEAKER_MUTED : SPEAKER_ON;
+        });
+        document.addEventListener('touchstart', (e) => {
+          const t = e.target;
+          if (!(t instanceof Element)) return;
+          const player = t.closest('[data-player]');
+          if (!player) return;
+          if (t.closest('[data-sound]')) return;
+          const video = player.querySelector('video');
+          if (!video) return;
+          if (video.paused) {
+            const p = video.play(); if (p && p.catch) p.catch(() => {});
+          } else {
+            video.pause(); try { video.currentTime = 0; } catch (_) {}
+          }
+        }, { passive: true });
+
         // baseline-grid easter egg: "g" toggles a faint overlay of the leading
         // grid, anchored so the lines sit exactly under the letters.
         // session-scoped so it survives view-transition navigations.
