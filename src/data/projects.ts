@@ -26,6 +26,8 @@ export interface Project {
   /** optional details note, revealed on click */
   rationale?: string;
   subtitle?: string;
+  /** course code (e.g. "HEB 117") shown parenthetically in Work in Progress */
+  course?: string;
   media?: ProjectMedia;
 }
 
@@ -109,9 +111,11 @@ export const workInProgress: Project[] = [
   {
     name: 'Closed-Loop Auditory Stimulation via Frontal Electrode Data',
     href: '/portfolio/closed-loop-auditory-stimulation',
+    course: 'HEB 117',
   },
   {
     name: 'On the Evolution of Private Property',
     href: '/portfolio/evolution-of-private-property',
+    course: 'MATH 242',
   },
 ];
