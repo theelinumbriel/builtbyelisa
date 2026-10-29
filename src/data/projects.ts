@@ -28,6 +28,8 @@ export interface Project {
   subtitle?: string;
   /** course code (e.g. "HEB 117") shown parenthetically in Work in Progress */
   course?: string;
+  /** repo URL rendered below the expanded description */
+  repo?: string;
   media?: ProjectMedia;
 }
 
@@ -35,23 +37,27 @@ export const softwareProjects: Project[] = [
   {
     name: 'Manual',
     subtitle: 'Visual input layer for building with LLMs',
-    href: '/portfolio/manual',
+    href: 'https://github.com/theelinumbriel/manual',
+    external: true,
+    repo: 'https://github.com/theelinumbriel/manual',
     rationale:
       "A recurring frustration that I have when building anything visual is the meaning that gets lost when I try to translate the visual I have in my mind into a natural language prompt. This aims to reduce the friction of drawing something out and uploading a screenshot or photo; use this to sketch screens on an iPad, save them to a Mac, and use them as design references for your LLM. You can also capture a working web page onto another screen to annotate the next iteration.",
   },
   {
     name: 'Aniso',
     subtitle: 'Simulation of the evolution of syntactic language',
-    href: 'https://aniso-three.vercel.app',
+    href: 'https://github.com/theelinumbriel/aniso',
     external: true,
+    repo: 'https://github.com/theelinumbriel/aniso',
     rationale:
       "One of my favorite papers in the evolutionary biology canon is Seyfarth et al.’s 1980 paper “Vervet monkey alarm calls: Semantic communication in a free-ranging primate.”\n\nThis project simulates the evolution of language by modeling the vervet monkeys in the Seyfarth paper as abstract agents that encounter three threat classes and can only emit three sounds: a, ni, or so. The goal is to study whether stable signaling conventions can emerge from initially unassigned calls under stochastic threat exposure and selection; the observer tracks population-level outcomes and per-agent interaction histories.",
   },
   {
     name: 'Helloword',
     subtitle: 'A more pleasant Markdown editor',
-    href: 'https://theelinumbriel.github.io/helloword/',
+    href: 'https://github.com/theelinumbriel/helloword',
     external: true,
+    repo: 'https://github.com/theelinumbriel/helloword',
     rationale:
       'A WYSIWYG editor for Markdown. This is the synthesis of two thoughts: a - I want to actually read the markdown outputs of LLMs; b - code editors are not a nice place to do this. Helloword provides a document-style editing surface for Markdown with formatting beyond the standard spec (color, highlighting, etc.) while keeping the underlying file plain Markdown.',
   },
@@ -60,6 +66,7 @@ export const softwareProjects: Project[] = [
     subtitle: 'Live editing for webapps',
     href: 'https://github.com/theelinumbriel/inline',
     external: true,
+    repo: 'https://github.com/theelinumbriel/inline',
     rationale:
       "A lightweight tool for editing a live page's copy in place. Add a single script (inline.js) to any page, append /edit to the URL, and click any text to edit it directly. Saving writes the change back to the source file via a small included server; alternatively, edits can be exported as JSON.",
   },
@@ -81,7 +88,7 @@ export const hardwareProjects: Project[] = [
     subtitle: 'A piezo disc at your model’s disposal.',
     plain: true,
     rationale:
-      'Uses: a piezoelectric disc + an Arduino. Through natural language in a browser window you give your model a fixed vocabulary of haptic output (length, number, rhythm of vibration) and as much context as you want, and your LLM can emit vibrations that travel over Web Serial to the board. I can imagine a use case being feedback while you present; amodel follows your talk and tells you to slow down or skip ahead or check the time with a tap against your wrist.',
+      'Uses: a piezoelectric disc + an Arduino. Through natural language in a browser window you give your model a fixed vocabulary of haptic output (length, number, rhythm of vibration) and as much context as you want, and your LLM can emit vibrations that travel over Web Serial to the board. I can imagine a use case being feedback while you present; a model follows your talk and tells you to slow down or skip ahead or check the time with a tap against your wrist.',
     media: {
       poster: '/videos/haptic-output.jpg',
       video: '/videos/haptic-output.mp4',
@@ -94,7 +101,7 @@ export const hardwareProjects: Project[] = [
     subtitle: 'glanceable risk levels for an LLM’s permission requests.',
     plain: true,
     rationale:
-      'A one-digit display updates in real-time in response to your LLM’s lifecycle hooks drive it; it displays a spinner while the LLM is working, a blinking 1-3 when it stops for a permission request (the number corresponds to the risk level, with 3 as highest risk) and a short “u” when the turn is done..',
+      'A one-digit display updates in real-time in response to your LLM’s lifecycle hooks drive it; it displays a spinner while the LLM is working, a blinking 1-3 when it stops for a permission request (the number corresponds to the risk level, with 3 as highest risk) and a short “u” when the turn is done.',
     media: {
       poster: '/videos/corner-of-my-eye.jpg',
       video: '/videos/corner-of-my-eye.mp4',
