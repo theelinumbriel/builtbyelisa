@@ -17,7 +17,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     name: 'Manual',
-    subtitle: 'Visual input layer for building interfaces',
+    subtitle: 'Visual input layer for building with LLMs',
     href: '/portfolio/manual',
     rationale:
       "A recurring frustration that I have when building anything visual is the meaning that gets lost when I try to translate the visual I have in my mind into a natural language prompt. This aims to reduce the friction of drawing something out and uploading a screenshot or photo; use this to sketch screens on an iPad, save them to a Mac, and use them as design references for your LLM. You can also capture a working web page onto another screen to annotate the next iteration.",
@@ -32,6 +32,7 @@ export const projects: Project[] = [
   },
   {
     name: 'Helloword',
+    subtitle: 'A more pleasant Markdown editor',
     href: 'https://theelinumbriel.github.io/helloword/',
     external: true,
     rationale:
@@ -39,13 +40,15 @@ export const projects: Project[] = [
   },
   {
     name: 'Inline',
+    subtitle: 'Live editing for webapps',
     href: 'https://github.com/theelinumbriel/inline',
     external: true,
     rationale:
       "A lightweight tool for editing a live page's copy in place. Add a single script (inline.js) to any page, append /edit to the URL, and click any text to edit it directly. Saving writes the change back to the source file via a small included server; alternatively, edits can be exported as JSON.",
   },
   {
-    name: 'Oystr',
+    name: 'OYSTR',
+    subtitle: 'Natural language to voxels',
     href: null,
     soon: true,
     plain: true,

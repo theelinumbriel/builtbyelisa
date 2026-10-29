@@ -25,6 +25,7 @@ const resolveHref = (href: string) => (href.startsWith('/') ? base + href : href
                 ) : (
                   <span class="u" title="coming soon">{p.name}</span>
                 )}
+                {p.subtitle && <span class="project-subtitle"> ({p.subtitle})</span>}
               </span>
               {p.rationale && (
                 <button class="why" type="button" aria-expanded="false" aria-controls={`r-${i}`} aria-label="Show details">
@@ -35,7 +36,6 @@ const resolveHref = (href: string) => (href.startsWith('/') ? base + href : href
             {p.rationale && (
               <div class="rationale" id={`r-${i}`}>
                 <div class="rationale-inner">
-                  {p.subtitle && <p class="project-subtitle">{p.subtitle}</p>}
                   {p.rationale.split(/\n\n/).map((paragraph) => <p>{paragraph}</p>)}
                 </div>
               </div>
@@ -179,7 +179,8 @@ const resolveHref = (href: string) => (href.startsWith('/') ? base + href : href
     opacity: 0;
     transition: opacity 0.28s ease;
   }
-  .project-subtitle { font-style: italic; }
+  .label { min-width: 0; }
+  .project-subtitle { color: var(--muted); }
 
   .proj[data-open] .rationale-inner p {
     opacity: 1;
