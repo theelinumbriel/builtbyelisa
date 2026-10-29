@@ -42,6 +42,9 @@ const resolveAsset = (path: string) => `${base}${path}`;
                   <div class="rationale" id={`sw-${i}`}>
                     <div class="rationale-inner">
                       <p>{p.rationale}</p>
+                      {p.repo && (
+                        <p class="sw-repo"><a href={p.repo} target="_blank" rel="noopener">repo</a></p>
+                      )}
                     </div>
                   </div>
                 )}
@@ -335,12 +338,15 @@ const resolveAsset = (path: string) => `${base}${path}`;
     padding-top: 0.3rem;
   }
   .hw-text p { padding-top: 0.3rem; }
-  .hw-text .hw-repo {
+  .hw-text .hw-repo,
+  .sw-repo {
     padding: 0 0 0.3rem;
     font-style: italic;
   }
-  .hw-text .hw-repo a { color: var(--muted); }
-  .hw-text .hw-repo a:hover { color: var(--fg); }
+  .hw-text .hw-repo a,
+  .sw-repo a { color: var(--muted); }
+  .hw-text .hw-repo a:hover,
+  .sw-repo a:hover { color: var(--fg); }
 
   .hw-video { flex: none; }
   .player {

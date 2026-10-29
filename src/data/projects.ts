@@ -27,27 +27,33 @@ export interface Project {
   subtitle?: string;
   /** course code (e.g. "HEB 117") shown parenthetically in Work in Progress */
   course?: string;
+  /** repo URL rendered below the expanded description */
+  repo?: string;
   media?: ProjectMedia;
 }
 
 export const softwareProjects: Project[] = [
   {
     name: 'manual',
-    href: '/portfolio/manual',
+    href: 'https://github.com/theelinumbriel/manual',
+    external: true,
+    repo: 'https://github.com/theelinumbriel/manual',
     rationale:
       'A visual input layer for building interfaces with AI. Sketch named screens on an iPad, save them to a Mac, and use the drawings as design references. Capture a working web page onto another screen to annotate the next revision.',
   },
   {
     name: 'aniso',
-    href: 'https://aniso-three.vercel.app',
+    href: 'https://github.com/theelinumbriel/aniso',
     external: true,
+    repo: 'https://github.com/theelinumbriel/aniso',
     rationale:
       'A public, read-only agent-based simulation for studying whether stable signaling conventions can emerge from initially unassigned calls under stochastic threat exposure and selection. Abstract agents encounter three threat classes and can emit a, ni, or so; the observer tracks population-level outcomes and per-agent interaction histories.',
   },
   {
     name: 'helloword',
-    href: 'https://theelinumbriel.github.io/helloword/',
+    href: 'https://github.com/theelinumbriel/helloword',
     external: true,
+    repo: 'https://github.com/theelinumbriel/helloword',
     rationale:
       'A WYSIWYG editor for Markdown. This is the synthesis of two thoughts: a - I want to actually read the markdown outputs of LLMs; b - code editors are not a nice place to do this. Helloword provides a document-style editing surface for Markdown with formatting beyond the standard spec (color, highlighting, etc.) while keeping the underlying file plain Markdown.',
   },
@@ -55,6 +61,7 @@ export const softwareProjects: Project[] = [
     name: 'inline',
     href: 'https://github.com/theelinumbriel/inline',
     external: true,
+    repo: 'https://github.com/theelinumbriel/inline',
     rationale:
       "A lightweight tool for editing a live page's copy in place. Add a single script (inline.js) to any page, append /edit to the URL, and click any text to edit it directly. Saving writes the change back to the source file via a small included server; alternatively, edits can be exported as JSON.",
   },
@@ -75,7 +82,7 @@ export const hardwareProjects: Project[] = [
     subtitle: 'A piezo disc at your model’s disposal.',
     plain: true,
     rationale:
-      'Uses: a piezoelectric disc + an Arduino. Through natural language in a browser window you give your model a fixed vocabulary of haptic output (length, number, rhythm of vibration) and as much context as you want, and your LLM can emit vibrations that travel over Web Serial to the board. I can imagine a use case being feedback while you present; amodel follows your talk and tells you to slow down or skip ahead or check the time with a tap against your wrist.',
+      'Uses: a piezoelectric disc + an Arduino. Through natural language in a browser window you give your model a fixed vocabulary of haptic output (length, number, rhythm of vibration) and as much context as you want, and your LLM can emit vibrations that travel over Web Serial to the board. I can imagine a use case being feedback while you present; a model follows your talk and tells you to slow down or skip ahead or check the time with a tap against your wrist.',
     media: {
       poster: '/videos/haptic-output.jpg',
       video: '/videos/haptic-output.mp4',
@@ -88,7 +95,7 @@ export const hardwareProjects: Project[] = [
     subtitle: 'glanceable risk levels for an LLM’s permission requests.',
     plain: true,
     rationale:
-      'A one-digit display updates in real-time in response to your LLM’s lifecycle hooks drive it; it displays a spinner while the LLM is working, a blinking 1-3 when it stops for a permission request (the number corresponds to the risk level, with 3 as highest risk) and a short “u” when the turn is done..',
+      'A one-digit display updates in real-time in response to your LLM’s lifecycle hooks drive it; it displays a spinner while the LLM is working, a blinking 1-3 when it stops for a permission request (the number corresponds to the risk level, with 3 as highest risk) and a short “u” when the turn is done.',
     media: {
       poster: '/videos/corner-of-my-eye.jpg',
       video: '/videos/corner-of-my-eye.mp4',
