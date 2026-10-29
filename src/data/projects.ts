@@ -85,7 +85,7 @@ export const softwareProjects: Project[] = [
 export const hardwareProjects: Project[] = [
   {
     name: 'Haptic output from an LLM',
-    subtitle: 'A piezo disc at your model’s disposal.',
+    subtitle: 'A piezo disc at your model’s disposal',
     plain: true,
     rationale:
       'Uses: a piezoelectric disc + an Arduino. Through natural language in a browser window you give your model a fixed vocabulary of haptic output (length, number, rhythm of vibration) and as much context as you want, and your LLM can emit vibrations that travel over Web Serial to the board. I can imagine a use case being feedback while you present; a model follows your talk and tells you to slow down or skip ahead or check the time with a tap against your wrist.',
@@ -98,7 +98,7 @@ export const hardwareProjects: Project[] = [
   },
   {
     name: 'Corner of my eye',
-    subtitle: 'glanceable risk levels for an LLM’s permission requests.',
+    subtitle: 'glanceable risk levels for an LLM’s permission requests',
     plain: true,
     rationale:
       'A one-digit display updates in real-time in response to your LLM’s lifecycle hooks drive it; it displays a spinner while the LLM is working, a blinking 1-3 when it stops for a permission request (the number corresponds to the risk level, with 3 as highest risk) and a short “u” when the turn is done.',
