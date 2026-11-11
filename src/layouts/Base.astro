@@ -181,6 +181,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         document.addEventListener('astro:page-load', placeGrid);
         window.addEventListener('resize', placeGrid);
         placeGrid();
+
+        // warm up hardware clips so the first hover plays without a cold fetch.
+        // preload="auto" is only a hint; browsers skip it often (hidden in a
+        // collapsed section, data-saver, etc.). a muted play-then-pause forces
+        // the decoder to spin up and buffers enough data for instant playback.
+        const warmVideos = () => {
+          document.querySelectorAll<HTMLVideoElement>('video.clip').forEach((v) => {
+            try { v.load(); } catch (_) {}
+            const p = v.play();
+            if (p && p.then) {
+              p.then(() => { v.pause(); try { v.currentTime = 0; } catch (_) {} })
+               .catch(() => {});
+            }
+          });
+        };
+        document.addEventListener('astro:page-load', warmVideos);
+        warmVideos();
       }
     </script>
   </body>
