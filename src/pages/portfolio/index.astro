@@ -97,7 +97,7 @@ const resolveAsset = (path: string) => `${base}${path}`;
                               class="clip"
                               src={resolveAsset(p.media.video)}
                               poster={resolveAsset(p.media.poster)}
-                              preload="metadata"
+                              preload="auto"
                               muted
                               loop
                               playsinline

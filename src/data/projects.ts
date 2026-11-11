@@ -66,6 +66,14 @@ export const softwareProjects: Project[] = [
       "A lightweight tool for editing a live page's copy in place. Add a single script (inline.js) to any page, append /edit to the URL, and click any text to edit it directly. Saving writes the change back to the source file via a small included server; alternatively, edits can be exported as JSON.",
   },
   {
+    name: 'vox3',
+    href: 'https://github.com/theelinumbriel/vox3',
+    external: true,
+    repo: 'https://github.com/theelinumbriel/vox3',
+    rationale:
+      'a small step toward better text production, leveraging mini models this time. most promising so far on my crusade to make an LLM output text that is not banal (or die trying)',
+  },
+  {
     name: 'oystr',
     href: null,
     soon: true,
