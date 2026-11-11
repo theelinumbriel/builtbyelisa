@@ -5,6 +5,24 @@ import Nav from '../components/Nav.astro';
 ---
 
 <Base home={true}>
+  <div class="readme" tabindex="0" aria-label="README">
+    <span class="readme-link">README</span>
+    <div class="readme-panel" role="note">
+      <p>
+        Another self-important faux-minimalist portfolio, you’re thinking, and I’m afraid you’re quite right.
+        I felt the same way when I set out on the purposeful purported purposiveness without purpose<sup>1</sup>
+        of siphoning some of my thoughts and work into a few pages of HTML for others to enjoy.
+        Adorno and Horkheimer float to the surface of my mind as I write this, and I see plainly that this is
+        an affirmative endeavour, a libation poured to the labour market, that most capricious of gods.
+        But I choose this form nonetheless; this is me as Dasein doing my primordial historizing;
+        I have inherited this form, and I choose it. <em>Gleichwohl gewählt</em> as it were.
+      </p>
+      <p class="footnote">
+        <sup>1</sup> Immanuel Kant, <cite>Critique of the Power of Judgment</cite>, §15 (<em>Zweckmäßigkeit ohne Zweck</em>).
+      </p>
+    </div>
+  </div>
+
   <section class="hero">
     <h1 class="name"><HandwrittenLabel asset="elisa-diop-weyer" label="Elisa Diop-Weyer" /></h1>
     <Nav morph={true} />
@@ -15,6 +33,72 @@ import Nav from '../components/Nav.astro';
   /* home owns the full viewport -- no outer main padding */
   :global(main) {
     padding: 0;
+  }
+
+  .readme {
+    position: absolute;
+    top: 1.5rem;
+    left: var(--pad);
+    z-index: 10;
+    outline: none;
+  }
+
+  .readme-link {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+    cursor: help;
+    line-height: 1.5;
+  }
+  .readme:hover .readme-link,
+  .readme:focus-visible .readme-link {
+    opacity: 0.55;
+  }
+
+  .readme-panel {
+    position: absolute;
+    top: calc(1.5rem + 0.5rem);
+    left: 0;
+    width: min(32rem, calc(100vw - 2 * var(--pad)));
+    padding: 1.2rem 1.4rem;
+    background: var(--bg);
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+    pointer-events: none;
+  }
+  .readme:hover .readme-panel,
+  .readme:focus-within .readme-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .readme-panel p {
+    margin: 0;
+  }
+  .readme-panel sup {
+    font-size: 0.75em;
+    vertical-align: super;
+    line-height: 0;
+  }
+  .footnote {
+    margin-top: 0.9rem !important;
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  .footnote cite {
+    font-style: italic;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .readme-panel {
+      transition: none;
+    }
   }
 
   .hero {
