@@ -18,7 +18,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="essay-body">
       <ol class="main-list">
         <li>Complexity in abundance is evidence of selection;</li>
-        <li>That which can be destroyed by truth should be;</li>
+        <li>That which can be destroyed by truth should be;<sup><a href="#fn-1" id="ref-1" aria-describedby="footnote-label">1</a></sup></li>
         <li>
           I hate startup culture but I think I would love a startup culture populated by virtue ethicists;
 
@@ -36,6 +36,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </li>
       </ol>
     </div>
+
+    <aside class="footnotes" aria-labelledby="footnote-label">
+      <h2 id="footnote-label" class="sr-only">Footnotes</h2>
+      <ol>
+        <li id="fn-1">
+          P. C. Hodgell, <cite>Seeker’s Mask</cite> (1994). <a href="#ref-1" aria-label="Back to reference 1">↩</a>
+        </li>
+      </ol>
+    </aside>
 
     <p class="signature">-- emdw 20261016</p>
   </article>
@@ -102,5 +111,33 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .signature {
     margin-top: 2.5rem;
     text-align: right;
+  }
+
+  .footnotes {
+    margin-top: 2.5rem;
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  .footnotes ol {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+  .footnotes cite {
+    font-style: italic;
+  }
+  .footnotes a {
+    color: inherit;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 </style>
